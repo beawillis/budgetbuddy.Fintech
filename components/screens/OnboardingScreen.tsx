@@ -85,10 +85,10 @@ export default function OnboardingScreen({ stepNumber }: OnboardingScreenProps) 
       </div>
 
       {/* Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border px-6 py-4 flex gap-3">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border px-6 py-5 flex gap-3">
         <button
           onClick={handleSkip}
-          className="flex-1 py-3 px-4 border border-border rounded-lg text-foreground font-semibold hover:bg-secondary transition-colors"
+          className="flex-1 py-3 px-4 border-2 border-gray-300 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors"
         >
           Skip
         </button>

@@ -48,7 +48,7 @@ export default function SaveMoreScreen() {
                 <button
                   key={amount}
                   onClick={() => setScreen('reviewDeposit')}
-                  className="py-2 px-3 bg-white border border-border rounded-lg text-sm font-semibold text-foreground hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                  className="py-2 px-3 bg-white border border-border rounded-lg text-sm font-semibold text-gray-900 hover:bg-primary hover:text-white hover:border-primary transition-colors"
                 >
                   {amount}
                 </button>

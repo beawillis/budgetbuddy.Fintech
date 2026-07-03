@@ -60,7 +60,7 @@ export default function DepositScreen() {
         <div className="flex gap-3 mt-6">
           <button
             onClick={() => setScreen('dashboard')}
-            className="flex-1 py-3 px-4 border border-border rounded-lg text-foreground font-semibold hover:bg-secondary transition-colors"
+            className="flex-1 py-3 px-4 border-2 border-gray-300 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors"
           >
             Cancel
           </button>
