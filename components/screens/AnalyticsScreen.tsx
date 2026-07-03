@@ -23,34 +23,34 @@ export default function AnalyticsScreen() {
   return (
     <div className="bg-background min-h-screen">
       {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-10 px-6 py-4">
-        <h1 className="text-2xl font-bold text-foreground">Analytics</h1>
+      <div className="bg-white border-b border-border sticky top-0 z-10 px-6 py-5">
+        <h1 className="text-3xl font-bold text-foreground">Analytics</h1>
       </div>
 
       {/* Content */}
-      <div className="px-6 py-6 space-y-6">
+      <div className="px-6 py-7 space-y-6">
         {/* Key Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white border border-border rounded-xl p-4">
-            <p className="text-xs text-muted-foreground mb-2">Total Goals</p>
+          <div className="bg-white border border-border rounded-xl p-5">
+            <p className="text-xs text-muted-foreground mb-3 font-medium">Total Goals</p>
             <p className="text-3xl font-bold text-foreground">{goals.length}</p>
-            <p className="text-xs text-muted-foreground mt-2">
+            <p className="text-xs text-muted-foreground mt-3">
               {activeGoals} active • {completedGoals} completed
             </p>
           </div>
-          <div className="bg-white border border-border rounded-xl p-4">
-            <p className="text-xs text-muted-foreground mb-2">Total Target Value</p>
+          <div className="bg-white border border-border rounded-xl p-5">
+            <p className="text-xs text-muted-foreground mb-3 font-medium">Total Target Value</p>
             <p className="text-3xl font-bold text-foreground">₦{(totalTarget / 1000000).toFixed(1)}M</p>
-            <p className="text-xs text-muted-foreground mt-2">All goals combined</p>
+            <p className="text-xs text-muted-foreground mt-3">All goals combined</p>
           </div>
         </div>
 
         {/* Performance Score */}
         <div className="bg-white border border-border rounded-xl p-6">
-          <p className="text-sm text-muted-foreground mb-4">Overall Performance</p>
+          <p className="text-xs text-muted-foreground mb-4 font-medium tracking-wide">Overall Performance</p>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-4xl font-bold text-foreground">{performanceScore}%</h3>
-            <TrendingUp className="text-green-500" size={32} />
+            <h3 className="text-5xl font-bold text-foreground">{performanceScore}%</h3>
+            <TrendingUp className="text-green-500" size={36} />
           </div>
           <p className="text-sm text-green-600 font-semibold">
             ↑ {Math.round((totalSaved / totalTarget) * 100 - 50)}% vs last period
@@ -61,11 +61,11 @@ export default function AnalyticsScreen() {
         <div className="bg-gradient-to-br from-purple-100 to-pink-100 border border-purple-200 rounded-xl p-6">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-purple-700 font-medium mb-1">Habit Score</p>
-              <h3 className="text-4xl font-bold text-purple-900">85</h3>
-              <p className="text-xs text-purple-600 mt-2">Excellent streak consistency</p>
+              <p className="text-xs text-purple-700 font-semibold mb-2 tracking-wide">Habit Score</p>
+              <h3 className="text-5xl font-bold text-purple-900">85</h3>
+              <p className="text-xs text-purple-600 mt-3">Excellent streak consistency</p>
             </div>
-            <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center border-4 border-purple-300">
+            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center border-4 border-purple-300">
               <span className="text-3xl font-bold text-purple-900">85</span>
             </div>
           </div>
@@ -73,7 +73,7 @@ export default function AnalyticsScreen() {
 
         {/* Goal Progress Chart */}
         <div className="bg-white border border-border rounded-xl p-6">
-          <h3 className="font-bold text-foreground mb-4">Savings Progress</h3>
+          <h3 className="font-bold text-lg text-foreground mb-5">Savings Progress</h3>
           <div className="space-y-3">
             {[
               { label: 'Week 1', value: 60, color: 'bg-blue-500' },
