@@ -88,15 +88,15 @@ export default function OnboardingScreen({ stepNumber }: OnboardingScreenProps) 
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border px-6 py-5 flex gap-3">
         <button
           onClick={handleSkip}
-          className="flex-1 py-3 px-4 border-2 border-gray-300 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors"
+          className="flex-1 py-4 px-4 border-2 border-gray-400 rounded-lg text-gray-900 font-bold text-base hover:bg-gray-100 transition-colors"
         >
           Skip
         </button>
         <button
           onClick={handleNext}
-          className="flex-1 py-3 px-4 bg-primary rounded-lg text-white font-semibold hover:bg-opacity-90 transition-colors flex items-center justify-center gap-2"
+          className="flex-1 py-4 px-4 bg-purple-700 rounded-lg text-white font-bold text-lg hover:bg-purple-800 transition-colors flex items-center justify-center gap-2"
         >
-          Continue <ChevronRight size={20} />
+          Continue <ChevronRight size={22} />
         </button>
       </div>
     </div>
