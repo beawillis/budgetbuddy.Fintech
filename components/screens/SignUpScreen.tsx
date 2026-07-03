@@ -2,7 +2,7 @@
 
 import { useApp } from '@/lib/AppContext'
 import { useState } from 'react'
-import { ChevronLeft, Eye, EyeOff, Check } from 'lucide-react'
+import { ChevronLeft, Eye, EyeOff } from 'lucide-react'
 
 export default function SignUpScreen() {
   const { setScreen } = useApp()
@@ -25,7 +25,6 @@ export default function SignUpScreen() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-border">
         <button onClick={() => setScreen('signin')} className="p-2">
           <ChevronLeft size={24} className="text-gray-900" />
@@ -35,12 +34,10 @@ export default function SignUpScreen() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 px-6 py-8 flex flex-col overflow-y-auto pb-40">
         <h1 className="text-4xl font-bold mb-3 text-gray-900">Create your BudgetBuddy account.</h1>
         <p className="text-gray-600 mb-8 text-base">Start building smarter saving habits</p>
 
-        {/* Form */}
         <div className="space-y-4 mb-8">
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">Full Name</label>
@@ -82,7 +79,6 @@ export default function SignUpScreen() {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-          </div>
             {password && (
               <div className="mt-2 space-y-1">
                 <div className="flex gap-1">
@@ -125,7 +121,6 @@ export default function SignUpScreen() {
               </button>
             </div>
           </div>
-          </div>
 
           <label className="flex items-start gap-3 cursor-pointer">
             <input
@@ -135,14 +130,11 @@ export default function SignUpScreen() {
               className="w-5 h-5 rounded border-gray-400 mt-1"
             />
             <span className="text-sm text-gray-700 font-medium">
-              I agree to the{' '}
-              <button className="text-purple-700 font-semibold hover:text-purple-800">Terms of Service</button> and{' '}
-              <button className="text-purple-700 font-semibold hover:text-purple-800">Privacy Policy</button>
+              I agree to the Terms of Service and Privacy Policy
             </span>
           </label>
         </div>
 
-        {/* Create Account Button */}
         <button
           onClick={handleSignUp}
           disabled={!passwordValid || !agreedToTerms || !fullName || !email}
@@ -151,10 +143,9 @@ export default function SignUpScreen() {
           Create Account
         </button>
 
-        {/* Sign In Link */}
         <p className="text-center text-gray-700 font-medium">
           Already have an account?{' '}
-          <button onClick={() => setScreen('signin')} className="text-purple-700 font-bold hover:text-purple-800">
+          <button onClick={() => setScreen('signin')} className="text-purple-600 font-bold hover:text-purple-700">
             Sign In
           </button>
         </p>
