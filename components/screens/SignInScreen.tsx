@@ -21,7 +21,7 @@ export default function SignInScreen() {
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-border">
         <button onClick={() => setScreen('onboarding1')} className="p-2">
-          <ChevronLeft size={24} className="text-foreground" />
+          <ChevronLeft size={24} className="text-gray-900" />
         </button>
         <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold">
           B
@@ -36,7 +36,7 @@ export default function SignInScreen() {
         {/* Form */}
         <div className="space-y-4 mb-8">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Email Address</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Email Address</label>
             <input
               type="email"
               value={email}
@@ -47,7 +47,7 @@ export default function SignInScreen() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Password</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -59,7 +59,7 @@ export default function SignInScreen() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
@@ -68,12 +68,12 @@ export default function SignInScreen() {
 
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-border" />
-              <span className="text-sm text-muted-foreground">Remember me</span>
+              <input type="checkbox" className="w-4 h-4 rounded border-gray-400" />
+              <span className="text-sm font-medium text-gray-900">Remember me</span>
             </label>
             <button
               onClick={() => setScreen('forgotPassword1')}
-              className="text-sm text-primary hover:underline"
+              className="text-sm font-semibold text-purple-700 hover:text-purple-800"
             >
               Forgot Password?
             </button>
@@ -83,7 +83,7 @@ export default function SignInScreen() {
         {/* Sign In Button */}
         <button
           onClick={handleSignIn}
-          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 mb-4"
+          className="w-full bg-purple-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-purple-800 mb-4"
         >
           Sign In
         </button>
@@ -91,13 +91,13 @@ export default function SignInScreen() {
         {/* Divider */}
         <div className="flex items-center gap-4 mb-6">
           <div className="flex-1 h-px bg-border" />
-          <span className="text-sm text-muted-foreground">or continue with</span>
+          <span className="text-sm font-medium text-gray-700">or continue with</span>
           <div className="flex-1 h-px bg-border" />
         </div>
 
         {/* Social Login */}
         <div className="flex gap-4 mb-8">
-          <button className="flex-1 flex items-center justify-center gap-2 border border-border py-3 rounded-lg hover:bg-secondary transition-colors">
+          <button className="flex-1 flex items-center justify-center gap-2 border-2 border-gray-300 py-3 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors">
             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
               <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
               <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -106,7 +106,7 @@ export default function SignInScreen() {
             </svg>
             Google
           </button>
-          <button className="flex-1 flex items-center justify-center gap-2 border border-border py-3 rounded-lg hover:bg-secondary transition-colors">
+          <button className="flex-1 flex items-center justify-center gap-2 border-2 border-gray-300 py-3 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors">
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M17.05 21h-3.72v-5.6h-2.25V21H7.07V9.9h3.01V7.3c0-2.49 1.48-3.85 3.75-3.85 1.06 0 1.98.08 2.24.11v2.59h-1.54c-1.2 0-1.43.57-1.43 1.4v1.83h2.87l-.37 2.5h-2.5V21z"/>
             </svg>
@@ -115,16 +115,16 @@ export default function SignInScreen() {
         </div>
 
         {/* Sign Up Link */}
-        <p className="text-center text-muted-foreground">
+        <p className="text-center text-gray-700 font-medium">
           Don&apos;t have an account?{' '}
-          <button onClick={() => setScreen('signup')} className="text-primary font-semibold hover:underline">
+          <button onClick={() => setScreen('signup')} className="text-purple-700 font-bold hover:text-purple-800">
             Sign up
           </button>
         </p>
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 border-t border-border text-center text-xs text-muted-foreground">
+      <div className="px-6 py-4 border-t border-border text-center text-xs text-gray-600 font-medium">
         <p>Your data is secure and encrypted</p>
       </div>
     </div>

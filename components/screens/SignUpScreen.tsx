@@ -28,7 +28,7 @@ export default function SignUpScreen() {
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-border">
         <button onClick={() => setScreen('signin')} className="p-2">
-          <ChevronLeft size={24} className="text-foreground" />
+          <ChevronLeft size={24} className="text-gray-900" />
         </button>
         <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold">
           B
@@ -43,7 +43,7 @@ export default function SignUpScreen() {
         {/* Form */}
         <div className="space-y-4 mb-8">
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Full Name</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Full Name</label>
             <input
               type="text"
               value={fullName}
@@ -54,7 +54,7 @@ export default function SignUpScreen() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Email Address</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Email Address</label>
             <input
               type="email"
               value={email}
@@ -65,7 +65,7 @@ export default function SignUpScreen() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Password</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -77,11 +77,12 @@ export default function SignUpScreen() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
+          </div>
             {password && (
               <div className="mt-2 space-y-1">
                 <div className="flex gap-1">
@@ -106,7 +107,7 @@ export default function SignUpScreen() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-foreground mb-2">Confirm Password</label>
+            <label className="block text-sm font-semibold text-gray-900 mb-2">Confirm Password</label>
             <div className="relative">
               <input
                 type={showConfirm ? 'text' : 'password'}
@@ -118,14 +119,12 @@ export default function SignUpScreen() {
               <button
                 type="button"
                 onClick={() => setShowConfirm(!showConfirm)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-muted-foreground"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-600"
               >
                 {showConfirm ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
-              {confirmPassword && password === confirmPassword && (
-                <Check size={20} className="absolute right-12 top-1/2 transform -translate-y-1/2 text-green-500" />
-              )}
             </div>
+          </div>
           </div>
 
           <label className="flex items-start gap-3 cursor-pointer">
@@ -133,12 +132,12 @@ export default function SignUpScreen() {
               type="checkbox"
               checked={agreedToTerms}
               onChange={(e) => setAgreedToTerms(e.target.checked)}
-              className="w-5 h-5 rounded border-border mt-1"
+              className="w-5 h-5 rounded border-gray-400 mt-1"
             />
-            <span className="text-sm text-muted-foreground">
+            <span className="text-sm text-gray-700 font-medium">
               I agree to the{' '}
-              <button className="text-primary hover:underline">Terms of Service</button> and{' '}
-              <button className="text-primary hover:underline">Privacy Policy</button>
+              <button className="text-purple-700 font-semibold hover:text-purple-800">Terms of Service</button> and{' '}
+              <button className="text-purple-700 font-semibold hover:text-purple-800">Privacy Policy</button>
             </span>
           </label>
         </div>
@@ -147,15 +146,15 @@ export default function SignUpScreen() {
         <button
           onClick={handleSignUp}
           disabled={!passwordValid || !agreedToTerms || !fullName || !email}
-          className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+          className="w-full bg-purple-700 text-white py-4 rounded-lg font-bold text-lg hover:bg-purple-800 disabled:opacity-50 disabled:cursor-not-allowed mb-4"
         >
           Create Account
         </button>
 
         {/* Sign In Link */}
-        <p className="text-center text-muted-foreground">
+        <p className="text-center text-gray-700 font-medium">
           Already have an account?{' '}
-          <button onClick={() => setScreen('signin')} className="text-primary font-semibold hover:underline">
+          <button onClick={() => setScreen('signin')} className="text-purple-700 font-bold hover:text-purple-800">
             Sign In
           </button>
         </p>
