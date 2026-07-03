@@ -24,7 +24,7 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
       color: 'bg-gradient-to-br from-blue-400 to-purple-400',
     },
     {
-      title: 'See every naira move you closer.',
+      title: 'See every amount move you closer.',
       description: 'Track your progress with beautiful insights and milestone celebrations.',
       icon: '📊',
       color: 'bg-gradient-to-br from-teal-400 to-blue-400',

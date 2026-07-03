@@ -24,7 +24,7 @@ const onboardingSteps = [
   },
   {
     step: 3,
-    title: 'See every naira move you closer.',
+    title: 'See every amount move you closer.',
     description: 'Track your progress with beautiful insights and milestone celebrations',
     icon: '📊',
     gradient: 'from-blue-500 to-purple-500',
