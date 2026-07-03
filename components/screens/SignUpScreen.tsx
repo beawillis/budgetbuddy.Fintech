@@ -37,8 +37,8 @@ export default function SignUpScreen() {
 
       {/* Content */}
       <div className="flex-1 px-6 py-8 flex flex-col overflow-y-auto pb-40">
-        <h1 className="text-3xl font-bold mb-2 text-foreground">Create your BudgetBuddy account.</h1>
-        <p className="text-muted-foreground mb-8">Start building smarter saving habits</p>
+        <h1 className="text-4xl font-bold mb-3 text-gray-900">Create your BudgetBuddy account.</h1>
+        <p className="text-gray-600 mb-8 text-base">Start building smarter saving habits</p>
 
         {/* Form */}
         <div className="space-y-4 mb-8">

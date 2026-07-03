@@ -63,11 +63,11 @@ export default function OnboardingScreen({ stepNumber }: OnboardingScreenProps) 
           {step.icon}
         </div>
 
-        <h2 className="text-3xl font-bold text-center mb-4 text-foreground">
+        <h2 className="text-4xl font-bold text-center mb-5 text-gray-900">
           {step.title}
         </h2>
 
-        <p className="text-center text-muted-foreground text-lg mb-8 max-w-sm">
+        <p className="text-center text-gray-600 text-base mb-8 max-w-sm leading-relaxed">
           {step.description}
         </p>
 

@@ -14,7 +14,7 @@ export default function DepositSuccessScreen() {
             <CheckCircle2 className="text-green-500" size={48} />
           </div>
 
-          <h1 className="text-2xl font-bold text-foreground mb-2">Deposit Successful!</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">Deposit Successful!</h1>
           <p className="text-muted-foreground mb-8">
             You&apos;ve added ₦110,000 towards your New MacBook Air goal.
           </p>

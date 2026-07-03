@@ -10,9 +10,9 @@ export default function DepositScreen() {
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50">
       <div className="bg-white w-full max-w-md rounded-t-3xl p-6">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-foreground">New Deposit</h1>
+          <h1 className="text-3xl font-bold text-gray-900">New Deposit</h1>
           <button onClick={() => setScreen('dashboard')} className="p-2">
-            <X size={24} className="text-foreground" />
+            <X size={24} className="text-gray-900" />
           </button>
         </div>
 

@@ -41,8 +41,8 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
         {stepNumber === 1 && (
           <>
             <Lock className="text-primary mb-4" size={32} />
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Forgot Password</h1>
-            <p className="text-muted-foreground mb-8">Reset your password to regain access to your account</p>
+            <h1 className="text-4xl font-bold mb-3 text-gray-900">Forgot Password</h1>
+            <p className="text-gray-600 mb-8 text-base">Reset your password to regain access to your account</p>
 
             <div className="mb-8">
               <label className="block text-sm font-medium text-foreground mb-2">Email address</label>
@@ -72,8 +72,8 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
         {stepNumber === 2 && (
           <>
             <Shield className="text-primary mb-4" size={32} />
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Enter Verification Code</h1>
-            <p className="text-muted-foreground mb-8">We&apos;ve sent a 6-digit code to you. Please verify your identity</p>
+            <h1 className="text-4xl font-bold mb-3 text-gray-900">Enter Verification Code</h1>
+            <p className="text-gray-600 mb-8 text-base">We&apos;ve sent a 6-digit code to you. Please verify your identity</p>
 
             <div className="mb-6">
               <label className="block text-sm font-medium text-foreground mb-2">Received code in 02:04</label>
@@ -112,8 +112,8 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
         {stepNumber === 3 && (
           <>
             <Shield className="text-primary mb-4" size={32} />
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Secure your account</h1>
-            <p className="text-muted-foreground mb-8">Set a new password for your account</p>
+            <h1 className="text-4xl font-bold mb-3 text-gray-900">Secure your account</h1>
+            <p className="text-gray-600 mb-8 text-base">Set a new password for your account</p>
 
             <div className="space-y-4 mb-8">
               <div>

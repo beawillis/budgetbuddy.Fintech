@@ -30,8 +30,8 @@ export default function SignInScreen() {
 
       {/* Content */}
       <div className="flex-1 px-6 py-8 flex flex-col">
-        <h1 className="text-3xl font-bold mb-2 text-foreground">Welcome back! 👋</h1>
-        <p className="text-muted-foreground mb-8">Continue building your financial future</p>
+        <h1 className="text-4xl font-bold mb-3 text-gray-900">Welcome back! 👋</h1>
+        <p className="text-gray-600 mb-8 text-base">Continue building your financial future</p>
 
         {/* Form */}
         <div className="space-y-4 mb-8">
