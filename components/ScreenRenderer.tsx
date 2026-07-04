@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { Home, Target, TrendingUp, User, Plus, X } from 'lucide-react'
+import { Home, ReceiptText, Target, TrendingUp, User, Plus, X } from 'lucide-react'
 import SplashScreen from './screens/SplashScreen'
 import OnboardingScreen from './screens/OnboardingScreen'
 import SignInScreen from './screens/SignInScreen'
@@ -13,6 +13,7 @@ import GoalsScreen from './screens/GoalsScreen'
 import CreateGoalScreen from './screens/CreateGoalScreen'
 import GoalCreatedScreen from './screens/GoalCreatedScreen'
 import AnalyticsScreen from './screens/AnalyticsScreen'
+import TransactionsScreen from './screens/TransactionsScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import EditProfileScreen from './screens/EditProfileScreen'
 import ChangePasswordScreen from './screens/ChangePasswordScreen'
@@ -54,9 +55,6 @@ export default function ScreenRenderer() {
     'reviewDeposit',
     'notifications',
     'editProfile',
-    'changePassword',
-    'biometricLogin',
-    'twoStepVerification',
   ].includes(screen)
 
   const renderScreen = () => {
@@ -83,6 +81,8 @@ export default function ScreenRenderer() {
         return <Dashboard />
       case 'goals':
         return <GoalsScreen />
+      case 'transactions':
+        return <TransactionsScreen />
       case 'createGoal':
         return <CreateGoalScreen />
       case 'goalCreated':
@@ -131,35 +131,40 @@ export default function ScreenRenderer() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f4f6fb] flex flex-col">
-      {isModalScreen && (
-        <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setScreen('dashboard')} />
-      )}
+    <div className="min-h-screen w-full bg-[#f4f6fb] px-0 sm:px-3 lg:px-6">
+      <div className="mx-auto flex min-h-screen w-full max-w-6xl flex-col lg:py-4">
+        <div className="relative flex flex-1 flex-col overflow-hidden bg-[#f4f6fb] lg:rounded-[32px] lg:border lg:border-white/70 lg:shadow-[0_20px_80px_rgba(15,23,42,0.12)]">
+          {isModalScreen && (
+            <div className="fixed inset-0 z-40 bg-black/50" onClick={() => setScreen('dashboard')} />
+          )}
 
-      <main className={`flex-1 overflow-y-auto ${isModalScreen ? 'overflow-hidden' : 'pb-24'}`}>
-        {renderScreen()}
-      </main>
+          <main className={`relative flex-1 w-full overflow-y-auto ${isModalScreen ? 'overflow-hidden' : 'pb-24 sm:pb-28'}`}>
+            {renderScreen()}
+          </main>
 
-      {!isModalScreen && (
-        <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/70 bg-white/90 backdrop-blur-xl">
-          <div className="mx-auto flex h-20 max-w-md items-center justify-around px-2">
-            <NavButton icon={Home} label="Home" screen="dashboard" />
-            <NavButton icon={Target} label="Goals" screen="goals" />
-            <FloatingButton />
-            <NavButton icon={TrendingUp} label="Analytics" screen="analytics" />
-            <NavButton icon={User} label="Profile" screen="profile" />
-          </div>
-        </nav>
-      )}
+          {!isModalScreen && (
+            <nav className="sticky bottom-0 z-50 w-full border-t border-white/70 bg-white/90 backdrop-blur-xl lg:rounded-b-[32px]">
+              <div className="mx-auto flex h-20 max-w-3xl items-center justify-around px-2 sm:max-w-4xl lg:max-w-none lg:px-6">
+                <NavButton icon={Home} label="Home" screen="dashboard" />
+                <NavButton icon={Target} label="Goals" screen="goals" />
+                <FloatingButton />
+                <NavButton icon={ReceiptText} label="Activity" screen="transactions" />
+                <NavButton icon={TrendingUp} label="Reports" screen="analytics" />
+                <NavButton icon={User} label="Profile" screen="profile" />
+              </div>
+            </nav>
+          )}
 
-      {isModalScreen && (
-        <button
-          onClick={() => setScreen('dashboard')}
-          className="fixed right-6 top-6 z-50 rounded-full bg-white p-2.5 shadow-lg"
-        >
-          <X size={22} className="text-foreground" />
-        </button>
-      )}
+          {isModalScreen && (
+            <button
+              onClick={() => setScreen('dashboard')}
+              className="absolute right-4 top-4 z-50 rounded-full bg-white p-2.5 shadow-lg"
+            >
+              <X size={22} className="text-foreground" />
+            </button>
+          )}
+        </div>
+      </div>
     </div>
   )
 }
@@ -179,7 +184,7 @@ function NavButton({
   return (
     <button
       onClick={() => setScreen(screen as any)}
-      className={`flex h-14 w-14 flex-col items-center justify-center rounded-2xl text-[11px] font-semibold transition-all ${
+      className={`flex h-14 flex-1 flex-col items-center justify-center rounded-2xl text-[11px] font-semibold transition-all ${
         isActive ? 'bg-primary text-white shadow-lg shadow-purple-200' : 'text-muted-foreground hover:bg-secondary'
       }`}
     >
@@ -194,7 +199,7 @@ function FloatingButton() {
   return (
     <button
       onClick={() => setScreen('newDeposit')}
-      className="flex h-16 w-16 -translate-y-5 flex-col items-center justify-center rounded-full bg-primary text-white shadow-xl shadow-purple-300 transition-transform hover:scale-105"
+      className="flex h-16 w-16 shrink-0 -translate-y-5 flex-col items-center justify-center rounded-full bg-primary text-white shadow-xl shadow-purple-300 transition-transform hover:scale-105"
     >
       <Plus size={28} />
     </button>

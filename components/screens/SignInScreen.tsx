@@ -8,10 +8,40 @@ import { ChevronLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react'
 function SocialButton({ label, icon }: { label: string; icon: React.ReactNode }) {
   const { setScreen } = useApp()
 
+  const handleSocialClick = () => {
+    if (label === 'Google') {
+      const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+      const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`
+
+      if (clientId) {
+        const params = new URLSearchParams({
+          client_id: clientId,
+          redirect_uri: redirectUri,
+          response_type: 'code',
+          scope: 'openid email profile',
+          access_type: 'offline',
+          prompt: 'select_account',
+        })
+        window.location.assign(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`)
+        return
+      }
+
+      window.location.assign('https://accounts.google.com/')
+      return
+    }
+
+    if (label === 'Apple') {
+      window.location.assign('https://appleid.apple.com/sign-in')
+      return
+    }
+
+    setScreen('loginSuccess')
+  }
+
   return (
     <button
       type="button"
-      onClick={() => setScreen('loginSuccess')}
+      onClick={handleSocialClick}
       className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border bg-white py-3 text-sm font-semibold text-foreground"
     >
       {icon}
@@ -41,7 +71,7 @@ export default function SignInScreen() {
         preferences: (result.user as any)?.preferences,
         financialProfile: (result.user as any)?.financialProfile,
       }
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && result.token) {
         window.localStorage.setItem('budgetbuddy.token', result.token)
         window.localStorage.setItem('budgetbuddy.user', JSON.stringify(userData))
       }
@@ -62,8 +92,11 @@ export default function SignInScreen() {
           <button onClick={() => setScreen('onboarding1')} className="rounded-full bg-[#f2ebff] p-2.5 text-primary">
             <ChevronLeft size={20} />
           </button>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
-            B
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+            <div
+              className="h-12 w-12 rounded-full bg-no-repeat bg-center"
+              style={{ backgroundImage: "url('/logo.png')", backgroundSize: 'auto 180%', backgroundPosition: 'center' }}
+            />
           </div>
         </div>
 

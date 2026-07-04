@@ -1,30 +1,39 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { api } from '@/lib/api'
 import { useState } from 'react'
 import { X } from 'lucide-react'
 
 export default function DepositScreen() {
-  const { setScreen, goals } = useApp()
-  const [selectedGoal, setSelectedGoal] = useState(goals[0]?.id || '')
+  const { setScreen, goals, setPendingDeposit, walletBalance } = useApp()
+  const [selectedGoalId, setSelectedGoalId] = useState(goals[0]?.id || '')
   const [amount, setAmount] = useState('')
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const selectedGoal = goals.find((goal) => goal.id === selectedGoalId)
 
-  const handleContinue = async () => {
-    if (!selectedGoal || !amount) return
-    setLoading(true)
+  const handleContinue = () => {
+    const numericAmount = Number(amount)
     setError('')
-    try {
-      await api.depositGoal(selectedGoal, Number(amount))
-      setScreen('reviewDeposit')
-    } catch (err) {
-      const errorMsg = err instanceof Error ? err.message : 'Unable to save right now'
-      setError(errorMsg)
-    } finally {
-      setLoading(false)
+
+    if (!selectedGoal) {
+      setError('Select a savings goal.')
+      return
     }
+
+    if (!Number.isFinite(numericAmount) || numericAmount <= 0) {
+      setError('Enter a valid deposit amount.')
+      return
+    }
+
+    setPendingDeposit({
+      goalId: selectedGoal.id,
+      backendGoalId: selectedGoal._id || selectedGoal.id,
+      goalName: selectedGoal.name,
+      amount: numericAmount,
+      currentAmount: selectedGoal.currentAmount,
+      targetAmount: selectedGoal.targetAmount,
+    })
+    setScreen('reviewDeposit')
   }
 
   return (
@@ -40,7 +49,7 @@ export default function DepositScreen() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Saving Towards</label>
-            <select value={selectedGoal} onChange={(e) => setSelectedGoal(e.target.value)} className="w-full px-4 py-3 border border-border rounded-lg bg-input focus:outline-none focus:ring-2 focus:ring-primary">
+            <select value={selectedGoalId} onChange={(e) => setSelectedGoalId(e.target.value)} className="w-full px-4 py-3 border border-border rounded-lg bg-input focus:outline-none focus:ring-2 focus:ring-primary">
               <option value="">Select goal</option>
               {goals.map((goal) => (
                 <option key={goal.id} value={goal.id}>
@@ -62,7 +71,7 @@ export default function DepositScreen() {
                 className="w-full pl-8 pr-4 py-3 border border-border rounded-lg bg-input focus:outline-none focus:ring-2 focus:ring-primary text-lg"
               />
             </div>
-            <p className="text-xs text-muted-foreground mt-2">Current Balance: ₦50,000</p>
+            <p className="text-xs text-muted-foreground mt-2">Current Balance: NGN {walletBalance.toLocaleString()}</p>
           </div>
 
           <div>
@@ -92,10 +101,10 @@ export default function DepositScreen() {
           </button>
           <button
             onClick={handleContinue}
-            disabled={loading || !selectedGoal || !amount}
+            disabled={!selectedGoal || !amount}
             className="flex-1 py-3 px-4 bg-primary rounded-lg text-white font-semibold hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {loading ? 'Saving…' : 'Continue'}
+            Continue
           </button>
         </div>
       </div>

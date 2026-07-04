@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Plus, Sparkles, Target, ChevronRight } from 'lucide-react'
 
 export default function GoalsScreen() {
-  const { setScreen, goals } = useApp()
+  const { setScreen, goals, setCurrentGoal } = useApp()
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 
   const filteredGoals = goals.filter((goal) => {
@@ -102,7 +102,10 @@ export default function GoalsScreen() {
                       <Target size={14} />
                       <span>Due {new Date(goal.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                     </div>
-                    <button onClick={() => setScreen('saveMore')} className="flex items-center gap-1 text-sm font-semibold text-primary">
+                    <button onClick={() => {
+                      setCurrentGoal(goal)
+                      setScreen('saveMore')
+                    }} className="flex items-center gap-1 text-sm font-semibold text-primary">
                       Save more <ChevronRight size={14} />
                     </button>
                   </div>

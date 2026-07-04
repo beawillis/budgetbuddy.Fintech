@@ -1,10 +1,13 @@
 'use client'
 
+import Image from 'next/image'
 import { useApp } from '@/lib/AppContext'
+import { getTimeBasedGreeting, getTimeEmoji } from '@/lib/greetings'
 import { ArrowUpRight, Bell, Clock, PiggyBank, Sparkles, Target, Wallet } from 'lucide-react'
 
 export default function Dashboard() {
   const { setScreen, transactions, goals, user, walletBalance, monthlyIncome, monthlyExpense } = useApp()
+  const greeting = getTimeBasedGreeting(user?.name)
 
   const totalSaved = goals.reduce((sum, goal) => sum + goal.currentAmount, 0)
   const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0)
@@ -14,6 +17,7 @@ export default function Dashboard() {
   const quickActions = [
     { label: 'Deposit', icon: '💰', onClick: () => setScreen('newDeposit') },
     { label: 'Goals', icon: '🎯', onClick: () => setScreen('goals') },
+    { label: 'Activity', icon: 'TX', onClick: () => setScreen('transactions') },
     { label: 'Analytics', icon: '📈', onClick: () => setScreen('analytics') },
     { label: 'Savings', icon: '🏦', onClick: () => setScreen('savings') },
     { label: 'Challenge', icon: '🏁', onClick: () => setScreen('challenge') },
@@ -29,9 +33,16 @@ export default function Dashboard() {
     <div className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-4 pb-24">
       <header className="rounded-[28px] border border-white/70 bg-white/90 p-4 shadow-sm backdrop-blur">
         <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">Good morning, {user?.name?.split(' ')[0] || 'there'}</p>
-            <h1 className="text-2xl font-semibold text-foreground">BudgetBuddy</h1>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full border border-purple-200 bg-white shadow-sm">
+              <div className="h-8 w-8 overflow-hidden rounded-full">
+                <Image src="/logo.png" alt="BudgetBuddy logo" width={40} height={40} className="h-full w-full object-contain" />
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">{greeting}</p>
+              <h1 className="text-2xl font-semibold text-foreground">BudgetBuddy</h1>
+            </div>
           </div>
           <button onClick={() => setScreen('notifications')} className="rounded-full bg-[#f2ebff] p-2.5 text-primary">
             <Bell size={20} />
@@ -129,7 +140,7 @@ export default function Dashboard() {
       <section className="rounded-[28px] border border-border bg-white p-4 shadow-sm">
         <div className="mb-3 flex items-center justify-between">
           <p className="text-sm font-semibold text-foreground">Recent activity</p>
-          <button onClick={() => setScreen('analytics')} className="text-sm font-semibold text-primary">
+          <button onClick={() => setScreen('transactions')} className="text-sm font-semibold text-primary">
             View all
           </button>
         </div>

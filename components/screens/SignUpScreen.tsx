@@ -6,55 +6,41 @@ import { useState } from 'react'
 import { ChevronLeft, Eye, EyeOff, ShieldCheck } from 'lucide-react'
 
 function SocialButton({ label, icon }: { label: string; icon: React.ReactNode }) {
-  const { setScreen, setUser, refreshData } = useApp()
+  const { setScreen } = useApp()
   const [loading, setLoading] = useState(false)
 
   const handleSocialSignUp = async () => {
     setLoading(true)
-    try {
-      // Simulate social auth - in production, integrate with actual OAuth providers
-      const mockUser = {
-        _id: `social-${Date.now()}`,
-        name: `${label} User`,
-        email: `user-${Date.now()}@${label.toLowerCase()}.com`,
-        preferences: { currency: 'USD' },
+
+    if (label === 'Google') {
+      const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+      const redirectUri = process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || `${window.location.origin}/auth/google/callback`
+
+      if (clientId) {
+        const params = new URLSearchParams({
+          client_id: clientId,
+          redirect_uri: redirectUri,
+          response_type: 'code',
+          scope: 'openid email profile',
+          access_type: 'offline',
+          prompt: 'select_account',
+        })
+        window.location.assign(`https://accounts.google.com/o/oauth2/v2/auth?${params.toString()}`)
+      } else {
+        window.location.assign('https://accounts.google.com/')
       }
-      
-      // Create or fetch user from social auth
-      const result = await api.register({ 
-        name: mockUser.name, 
-        email: mockUser.email, 
-        password: `social-${label}-${Date.now()}` 
-      }).catch(() => ({ token: 'mock-token', user: mockUser }))
-      
-      if (typeof window !== 'undefined') {
-        const userData = {
-          id: user._id || user.id || 'current-user',
-          name: user.name || `${label} User`,
-          email: user.email || mockUser.email,
-          preferences: user.preferences,
-          financialProfile: user.financialProfile,
-        }
-        window.localStorage.setItem('budgetbuddy.token', result.token)
-        window.localStorage.setItem('budgetbuddy.user', JSON.stringify(userData))
-      }
-      
-      const user = (result.user as any) || mockUser
-      setUser({
-        id: user._id || user.id || 'current-user',
-        name: user.name || `${label} User`,
-        email: user.email || mockUser.email,
-        preferences: user.preferences,
-        financialProfile: user.financialProfile,
-      })
-      
-      await refreshData().catch(() => {})
-      setScreen('accountCreated')
-    } catch (err) {
-      console.error(`${label} signup failed:`, err)
-    } finally {
       setLoading(false)
+      return
     }
+
+    if (label === 'Apple') {
+      window.location.assign('https://appleid.apple.com/sign-in')
+      setLoading(false)
+      return
+    }
+
+    setScreen('accountCreated')
+    setLoading(false)
   }
 
   return (
@@ -65,7 +51,7 @@ function SocialButton({ label, icon }: { label: string; icon: React.ReactNode })
       className="flex flex-1 items-center justify-center gap-2 rounded-2xl border border-border bg-white py-3 text-sm font-semibold text-foreground disabled:opacity-60"
     >
       {icon}
-      {loading ? 'Signing up...' : label}
+      {loading ? 'Redirecting...' : label}
     </button>
   )
 }
@@ -98,7 +84,7 @@ export default function SignUpScreen() {
         preferences: (result.user as any)?.preferences,
         financialProfile: (result.user as any)?.financialProfile,
       }
-      if (typeof window !== 'undefined') {
+      if (typeof window !== 'undefined' && result.token) {
         window.localStorage.setItem('budgetbuddy.token', result.token)
         window.localStorage.setItem('budgetbuddy.user', JSON.stringify(userData))
       }
@@ -118,8 +104,11 @@ export default function SignUpScreen() {
           <button onClick={() => setScreen('signin')} className="rounded-full bg-[#f2ebff] p-2.5 text-primary">
             <ChevronLeft size={20} />
           </button>
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
-            B
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+            <div
+              className="h-12 w-12 rounded-full bg-no-repeat bg-center"
+              style={{ backgroundImage: "url('/logo.png')", backgroundSize: 'auto 180%', backgroundPosition: 'center' }}
+            />
           </div>
         </div>
 

@@ -4,7 +4,12 @@ import { useApp } from '@/lib/AppContext'
 import { CheckCircle2 } from 'lucide-react'
 
 export default function DepositSuccessScreen() {
-  const { setScreen } = useApp()
+  const { setScreen, pendingDeposit, setPendingDeposit } = useApp()
+  const currentAmount = pendingDeposit?.currentAmount || 0
+  const targetAmount = pendingDeposit?.targetAmount || 0
+  const depositAmount = pendingDeposit?.amount || 0
+  const nextAmount = currentAmount + depositAmount
+  const progress = targetAmount ? Math.min(100, Math.round((nextAmount / targetAmount) * 100)) : 0
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -16,21 +21,24 @@ export default function DepositSuccessScreen() {
 
           <h1 className="text-3xl font-bold text-gray-900 mb-3">Deposit Successful!</h1>
           <p className="text-muted-foreground mb-8">
-            You&apos;ve added ₦110,000 towards your New MacBook Air goal.
+            You&apos;ve added NGN {depositAmount.toLocaleString()} towards your {pendingDeposit?.goalName || 'savings'} goal.
           </p>
 
           <div className="bg-secondary rounded-lg p-4 mb-6">
             <p className="text-sm text-muted-foreground mb-2">Current Progress</p>
-            <p className="text-3xl font-bold text-primary">₦860,000</p>
-            <p className="text-sm text-muted-foreground mt-1">of ₦1,000,000 saved</p>
+            <p className="text-3xl font-bold text-primary">NGN {nextAmount.toLocaleString()}</p>
+            <p className="text-sm text-muted-foreground mt-1">of NGN {targetAmount.toLocaleString()} saved</p>
             <div className="w-full bg-border rounded-full h-2 mt-3">
-              <div className="bg-green-500 h-2 rounded-full" style={{ width: '86%' }} />
+              <div className="bg-green-500 h-2 rounded-full" style={{ width: `${progress}%` }} />
             </div>
-            <p className="text-xs text-muted-foreground mt-2">🎯 Just 8 days remaining!</p>
+            <p className="text-xs text-muted-foreground mt-2">{progress}% completed</p>
           </div>
 
           <button
-            onClick={() => setScreen('dashboard')}
+            onClick={() => {
+              setPendingDeposit(null)
+              setScreen('dashboard')
+            }}
             className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90"
           >
             Back to Dashboard

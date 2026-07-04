@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useState } from 'react'
 import { ChevronRight, Check } from 'lucide-react'
 
@@ -45,9 +46,9 @@ export default function OnboardingFlow({ onComplete }: OnboardingFlowProps) {
     <div className="min-h-screen bg-gradient-to-br from-purple-500 via-purple-600 to-purple-700 flex flex-col items-center justify-center px-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="flex justify-center mb-12">
-          <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
-            <span className="text-2xl">💰</span>
+        <div className="mb-8 flex justify-center">
+          <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-white/95 shadow-2xl" style={{ boxShadow: '0 18px 50px rgba(124,58,237,0.28)' }}>
+            <Image src="/logo.png" alt="BudgetBuddy logo" width={96} height={96} priority className="h-full w-full object-contain" />
           </div>
         </div>
 

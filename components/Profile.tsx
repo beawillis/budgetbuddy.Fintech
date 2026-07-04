@@ -3,6 +3,20 @@
 import { ChevronRight, LogOut, Edit2, Bell, Lock, Trash2, Download } from 'lucide-react'
 import { useState } from 'react'
 
+type ProfileMenuItem = {
+  label: string
+  icon: string
+  value?: string
+  type?: 'button' | 'toggle'
+  enabled?: boolean
+  color?: string
+}
+
+type ProfileMenuSection = {
+  title: string
+  items: ProfileMenuItem[]
+}
+
 export default function Profile() {
   const [showSettings, setShowSettings] = useState(false)
 
@@ -15,7 +29,7 @@ export default function Profile() {
     avatar: '👤',
   }
 
-  const menuItems = [
+  const menuItems: ProfileMenuSection[] = [
     {
       title: 'Personal Information',
       items: [

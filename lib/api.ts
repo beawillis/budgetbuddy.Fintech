@@ -1,5 +1,15 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://budgetbuddy-backend-production-81d7.up.railway.app'
 
+type ReportPeriod = 'weekly' | 'monthly' | 'yearly'
+
+function unwrapPayload<T>(payload: unknown): T {
+  if (payload && typeof payload === 'object' && !Array.isArray(payload) && 'data' in payload) {
+    return (payload as { data?: T }).data as T
+  }
+
+  return payload as T
+}
+
 async function request<T>(path: string, options: RequestInit = {}, auth = true): Promise<T> {
   const token = typeof window !== 'undefined' ? window.localStorage.getItem('budgetbuddy.token') : null
   const headers: Record<string, string> = {}
@@ -25,25 +35,92 @@ async function request<T>(path: string, options: RequestInit = {}, auth = true):
   })
 
   const contentType = response.headers.get('content-type') || ''
-  const data = contentType.includes('application/json') ? await response.json().catch(() => null) : await response.text().catch(() => null)
+  const payload = contentType.includes('application/json') ? await response.json().catch(() => null) : await response.text().catch(() => null)
 
   if (!response.ok) {
     let message = 'Request failed'
-    
+
     if (response.status === 401) {
       message = 'Session expired. Please sign in again.'
       if (typeof window !== 'undefined') {
         window.localStorage.removeItem('budgetbuddy.token')
         window.localStorage.removeItem('budgetbuddy.user')
       }
-    } else if (data && typeof data === 'object' && 'message' in data) {
-      message = String((data as { message?: unknown }).message)
+    } else if (payload && typeof payload === 'object' && 'message' in payload) {
+      message = String((payload as { message?: unknown }).message)
+    } else if (payload && typeof payload === 'object' && 'error' in payload) {
+      message = String((payload as { error?: unknown }).error)
     }
-    
+
     throw new Error(message)
   }
 
-  return data as T
+  return unwrapPayload<T>(payload)
+}
+
+async function requestBlob(path: string, options: RequestInit = {}, auth = true): Promise<Blob> {
+  const token = typeof window !== 'undefined' ? window.localStorage.getItem('budgetbuddy.token') : null
+  const headers: Record<string, string> = {}
+
+  if (options.body && !(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json'
+  }
+
+  if (auth && !token) {
+    throw new Error('Authentication required. Please sign in.')
+  }
+
+  if (auth && token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers: {
+      ...headers,
+      ...(options.headers || {}),
+    },
+  })
+
+  if (!response.ok) {
+    const contentType = response.headers.get('content-type') || ''
+    const payload = contentType.includes('application/json') ? await response.json().catch(() => null) : await response.text().catch(() => null)
+    const message = payload && typeof payload === 'object' && 'message' in payload
+      ? String((payload as { message?: unknown }).message)
+      : 'Unable to download report'
+
+    throw new Error(message)
+  }
+
+  return response.blob()
+}
+
+async function requestWithFallback<T>(paths: string[], options: RequestInit = {}, auth = true): Promise<T> {
+  let lastError: unknown
+
+  for (const path of paths) {
+    try {
+      return await request<T>(path, options, auth)
+    } catch (err) {
+      lastError = err
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error('Request failed')
+}
+
+async function requestBlobWithFallback(paths: string[], options: RequestInit = {}, auth = true): Promise<Blob> {
+  let lastError: unknown
+
+  for (const path of paths) {
+    try {
+      return await requestBlob(path, options, auth)
+    } catch (err) {
+      lastError = err
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error('Unable to download report')
 }
 
 export const api = {
@@ -199,6 +276,32 @@ export const api = {
   getNotifications: () => request('/api/v1/notifications'),
 
   getAnalyticsSummary: () => request('/api/v1/analytics/summary'),
+
+  getReportSummary: (period: ReportPeriod = 'monthly') =>
+    requestWithFallback<Record<string, unknown>>([
+      `/api/v1/reports/summary?period=${period}`,
+      `/api/v1/reports?period=${period}`,
+      `/api/v1/reports/${period}`,
+      '/api/v1/analytics/summary',
+    ]),
+
+  downloadReportPdf: (period: ReportPeriod = 'monthly') =>
+    requestBlobWithFallback([
+      `/api/v1/reports/pdf?period=${period}`,
+      `/api/v1/reports/download?period=${period}`,
+      `/api/v1/reports/${period}/pdf`,
+      `/api/v1/reports/generate-pdf?period=${period}`,
+    ]),
+
+  emailReport: (period: ReportPeriod = 'monthly') =>
+    requestWithFallback<{ message?: string }>([
+      `/api/v1/reports/email?period=${period}`,
+      `/api/v1/reports/send-email?period=${period}`,
+      `/api/v1/reports/${period}/email`,
+    ], {
+      method: 'POST',
+      body: JSON.stringify({ period }),
+    }),
 
   assistantChat: (message: string) =>
     request('/api/v1/assistant/chat', {

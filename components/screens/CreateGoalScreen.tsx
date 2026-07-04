@@ -24,8 +24,9 @@ export default function CreateGoalScreen() {
     setError('')
     try {
       const result = await api.createGoal({ name: goalName, target: Number(targetAmount), deadline: dueDate })
+      const createdGoal = result && typeof result === 'object' && !Array.isArray(result) ? result as Record<string, unknown> : null
       addGoal({
-        id: result._id || result.id || Date.now().toString(),
+        id: String(createdGoal?._id || createdGoal?.id || Date.now()),
         name: goalName,
         targetAmount: Number(targetAmount),
         currentAmount: 0,

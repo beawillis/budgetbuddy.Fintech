@@ -30,6 +30,10 @@ export const viewport: Viewport = {
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#7C3AED' },
   ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 }
 
 export default function RootLayout({
@@ -39,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="bg-background">
-      <body className="antialiased bg-background">
+      <body className="min-h-screen overflow-x-hidden bg-background antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

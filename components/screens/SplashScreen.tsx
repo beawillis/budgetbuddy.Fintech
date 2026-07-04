@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useApp } from '@/lib/AppContext'
 import { useEffect } from 'react'
 
@@ -9,21 +10,24 @@ export default function SplashScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setScreen('onboarding1')
-    }, 2000)
+    }, 30000)
     return () => clearTimeout(timer)
   }, [setScreen])
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-purple-600 via-purple-500 to-purple-400 flex flex-col items-center justify-center text-white">
-      <div className="text-center">
-        <div className="w-20 h-20 rounded-full bg-white bg-opacity-20 flex items-center justify-center mx-auto mb-6">
-          <svg className="w-12 h-12" viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="24" r="20" fill="currentColor" />
-            <text x="24" y="28" textAnchor="middle" fontSize="20" fontWeight="bold" fill="#7C3AED">B</text>
-          </svg>
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-[#a855f7] via-[#c084fc] to-[#ede9fe] text-white">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_transparent_35%)]" />
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-center px-6">
+        <div className="mb-6">
+          <div className="relative mx-auto flex h-36 w-36 items-center justify-center rounded-full bg-white/15 shadow-[0_25px_70px_rgba(124,58,237,0.25)]">
+            <div className="flex h-28 w-28 items-center justify-center rounded-full bg-white/10">
+              <Image src="/logo.png" alt="BudgetBuddy logo" width={112} height={112} priority className="h-full w-full object-contain" />
+            </div>
+          </div>
         </div>
-        <h1 className="text-4xl font-bold mb-3">BudgetBuddy</h1>
-        <p className="text-lg opacity-90">Your Personal Accountability Partner</p>
+
+        <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl">BudgetBuddy</h1>
+        <p className="mt-3 max-w-xs text-center text-base text-white/85 sm:text-lg">Your Financial Accountability Partner</p>
       </div>
     </div>
   )

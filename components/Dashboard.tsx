@@ -1,12 +1,14 @@
 'use client'
 
 import { Bell, Wallet, TrendingUp, Clock } from 'lucide-react'
+import { getTimeBasedGreeting } from '@/lib/greetings'
 
 export default function Dashboard() {
   const user = {
     name: 'Temmiy',
     status: 'Good progress today. You&apos;re saving smart!',
   }
+  const greeting = getTimeBasedGreeting(user.name)
 
   const savingsGoal = {
     amount: '₦2,450,500',
@@ -56,7 +58,7 @@ export default function Dashboard() {
         <div className="flex-1">
           <div className="text-2xl font-bold text-gray-800 mb-1">💰 BudgetBuddy</div>
           <div className="text-gray-600 text-sm flex items-center gap-2">
-            <span>Good morning {user.name}</span>
+            <span>{greeting}</span>
             <span>😊</span>
           </div>
           <div className="text-xs text-gray-500 mt-2">{user.status}</div>
