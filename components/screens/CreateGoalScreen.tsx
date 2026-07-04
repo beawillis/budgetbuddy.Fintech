@@ -1,6 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
+import { api } from '@/lib/api'
 import { useState } from 'react'
 import { X } from 'lucide-react'
 
@@ -14,13 +15,19 @@ export default function CreateGoalScreen() {
   const icons = ['💻', '✈️', '🎓', '🏠', '🚗', '💍', '⌚', '📱']
   const categories = ['Gadgets', 'Travel', 'Education', 'Savings', 'Shopping', 'Entertainment', 'Health']
   const [selectedIcon, setSelectedIcon] = useState('💻')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleCreateGoal = () => {
-    if (goalName && targetAmount && dueDate && category) {
+  const handleCreateGoal = async () => {
+    if (!goalName || !targetAmount || !dueDate || !category) return
+    setLoading(true)
+    setError('')
+    try {
+      const result = await api.createGoal({ name: goalName, target: Number(targetAmount), deadline: dueDate })
       addGoal({
-        id: Date.now().toString(),
+        id: result._id || result.id || Date.now().toString(),
         name: goalName,
-        targetAmount: parseInt(targetAmount),
+        targetAmount: Number(targetAmount),
         currentAmount: 0,
         category,
         dueDate,
@@ -29,6 +36,10 @@ export default function CreateGoalScreen() {
         isCompleted: false,
       })
       setScreen('goalCreated')
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Unable to create goal')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -142,6 +153,8 @@ export default function CreateGoalScreen() {
           </div>
         </div>
 
+        {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
+
         {/* Buttons */}
         <div className="flex gap-3 mt-6">
           <button
@@ -152,10 +165,10 @@ export default function CreateGoalScreen() {
           </button>
           <button
             onClick={handleCreateGoal}
-            disabled={!goalName || !targetAmount || !dueDate || !category}
+            disabled={loading || !goalName || !targetAmount || !dueDate || !category}
             className="flex-1 py-3 px-4 bg-primary rounded-lg text-white font-semibold hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
-            Create Goal
+            {loading ? 'Creating…' : 'Create Goal'}
           </button>
         </div>
       </div>

@@ -2,13 +2,13 @@
 
 import { useApp } from '@/lib/AppContext'
 import { useState } from 'react'
-import { Plus, Filter } from 'lucide-react'
+import { Plus, Sparkles, Target, ChevronRight } from 'lucide-react'
 
 export default function GoalsScreen() {
   const { setScreen, goals } = useApp()
   const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all')
 
-  const filteredGoals = goals.filter(goal => {
+  const filteredGoals = goals.filter((goal) => {
     if (filter === 'active') return !goal.isCompleted
     if (filter === 'completed') return goal.isCompleted
     return true
@@ -18,135 +18,99 @@ export default function GoalsScreen() {
   const totalTargetValue = goals.reduce((sum, g) => sum + g.targetAmount, 0)
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-10">
-        <div className="px-6 py-5">
-          <div className="flex items-center justify-between mb-5">
-            <h1 className="text-3xl font-bold text-foreground">My Goals</h1>
-            <button
-              onClick={() => setScreen('createGoal')}
-              className="p-2.5 bg-primary text-white rounded-full hover:bg-opacity-90"
-            >
-              <Plus size={22} />
+    <div className="min-h-screen bg-[#f4f6fb] px-4 py-4 pb-24">
+      <div className="mx-auto flex max-w-md flex-col gap-4">
+        <header className="rounded-[28px] border border-white/70 bg-white/90 p-4 shadow-sm backdrop-blur">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">Your savings plan</p>
+              <h1 className="text-2xl font-semibold text-foreground">My goals</h1>
+            </div>
+            <button onClick={() => setScreen('createGoal')} className="rounded-full bg-primary p-2.5 text-white shadow-lg shadow-purple-200">
+              <Plus size={20} />
             </button>
           </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-secondary rounded-xl p-4">
-              <p className="text-xs text-muted-foreground mb-2 font-medium">Total Goals</p>
-              <p className="text-2xl font-bold text-foreground">{totalGoals}</p>
-              <p className="text-xs text-muted-foreground mt-2">3 active • 1 completed</p>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-[20px] bg-[#f8f5ff] p-3">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Total goals</p>
+              <p className="mt-1 text-xl font-semibold text-foreground">{totalGoals}</p>
             </div>
-            <div className="bg-secondary rounded-xl p-4">
-              <p className="text-xs text-muted-foreground mb-2 font-medium">Total Target Value</p>
-              <p className="text-2xl font-bold text-foreground">₦{(totalTargetValue / 1000000).toFixed(1)}M</p>
-              <p className="text-xs text-muted-foreground mt-2">All goals combined</p>
+            <div className="rounded-[20px] bg-[#f8f5ff] p-3">
+              <p className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground">Target value</p>
+              <p className="mt-1 text-xl font-semibold text-foreground">₦{(totalTargetValue / 1000000).toFixed(1)}M</p>
             </div>
           </div>
 
-          {/* Filters */}
-          <div className="flex gap-2 mt-5">
-            {(['all', 'active', 'completed'] as const).map(f => (
+          <div className="mt-4 flex gap-2">
+            {(['all', 'active', 'completed'] as const).map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
-                className={`px-5 py-2.5 rounded-lg text-xs font-semibold transition-colors ${
-                  filter === f
-                    ? 'bg-primary text-white'
-                    : 'bg-secondary text-foreground hover:bg-opacity-80'
+                className={`rounded-full px-3 py-2 text-xs font-semibold transition-all ${
+                  filter === f ? 'bg-primary text-white shadow-sm' : 'bg-[#f8fafc] text-muted-foreground'
                 }`}
               >
                 {f.charAt(0).toUpperCase() + f.slice(1)}
               </button>
             ))}
           </div>
-        </div>
-      </div>
+        </header>
 
-      {/* Goals List */}
-      <div className="px-6 py-7 space-y-4">
-        {filteredGoals.length === 0 ? (
-          <div className="text-center py-16">
-            <p className="text-base text-muted-foreground mb-6">No {filter === 'all' ? '' : filter} goals yet</p>
-            <button
-              onClick={() => setScreen('createGoal')}
-              className="bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-opacity-90 text-sm"
-            >
-              Create Your First Goal
-            </button>
-          </div>
-        ) : (
-          filteredGoals.map(goal => {
-            const progress = (goal.currentAmount / goal.targetAmount) * 100
-            return (
-              <div
-                key={goal.id}
-                className="bg-white border border-border rounded-xl p-5 hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => {
-                  setScreen('goalCreated')
-                }}
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center gap-3 flex-1">
-                    <div className="text-4xl">{goal.icon}</div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-base text-foreground">{goal.name}</h3>
-                        {goal.isCompleted && (
-                          <span className="bg-green-100 text-green-700 text-xs px-2.5 py-1 rounded-full font-medium">
-                            Completed
-                          </span>
-                        )}
+        <div className="space-y-3">
+          {filteredGoals.length === 0 ? (
+            <div className="rounded-[28px] border border-border bg-white p-6 text-center shadow-sm">
+              <div className="mb-3 flex justify-center text-3xl text-primary">
+                <Sparkles size={24} />
+              </div>
+              <p className="text-base font-semibold text-foreground">No {filter === 'all' ? '' : filter} goals yet</p>
+              <p className="mt-2 text-sm text-muted-foreground">Create your first goal and keep your savings on track.</p>
+              <button onClick={() => setScreen('createGoal')} className="mt-4 rounded-2xl bg-primary px-4 py-2.5 text-sm font-semibold text-white">
+                Create a goal
+              </button>
+            </div>
+          ) : (
+            filteredGoals.map((goal) => {
+              const progress = (goal.currentAmount / goal.targetAmount) * 100
+              return (
+                <div key={goal.id} className="rounded-[24px] border border-border bg-white p-4 shadow-sm">
+                  <div className="mb-3 flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-2xl bg-[#f8f5ff] p-2 text-xl">{goal.icon}</div>
+                      <div>
+                        <p className="font-semibold text-foreground">{goal.name}</p>
+                        <p className="text-xs text-muted-foreground">{goal.category}</p>
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">📌 {goal.category}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-lg font-semibold text-foreground">{Math.round(progress)}%</p>
+                      <p className="text-[11px] text-muted-foreground">Complete</p>
                     </div>
                   </div>
-                  <div className="text-right">
-                    <p className="text-2xl font-bold text-green-500">{Math.round(progress)}%</p>
-                    <p className="text-xs text-muted-foreground mt-1">Complete</p>
+
+                  <div className="mb-3 h-2.5 w-full rounded-full bg-[#f1f5f9]">
+                    <div className={`h-2.5 rounded-full ${goal.isCompleted ? 'bg-emerald-500' : 'bg-primary'}`} style={{ width: `${Math.min(progress, 100)}%` }} />
+                  </div>
+
+                  <div className="mb-3 flex items-center justify-between text-xs text-muted-foreground">
+                    <span>₦{goal.currentAmount.toLocaleString()} saved</span>
+                    <span>Goal ₦{goal.targetAmount.toLocaleString()}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Target size={14} />
+                      <span>Due {new Date(goal.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    </div>
+                    <button onClick={() => setScreen('saveMore')} className="flex items-center gap-1 text-sm font-semibold text-primary">
+                      Save more <ChevronRight size={14} />
+                    </button>
                   </div>
                 </div>
-
-                {/* Progress Bar */}
-                <div className="w-full bg-border rounded-full h-2.5 mb-4">
-                  <div
-                    className={`h-2.5 rounded-full transition-all ${
-                      goal.isCompleted ? 'bg-green-500' : 'bg-primary'
-                    }`}
-                    style={{ width: `${Math.min(progress, 100)}%` }}
-                  />
-                </div>
-
-                {/* Amount Info */}
-                <div className="flex items-center justify-between text-xs">
-                  <p className="text-muted-foreground">
-                    ₦{goal.currentAmount.toLocaleString()} / ₦{goal.targetAmount.toLocaleString()}
-                  </p>
-                  <p className="text-muted-foreground">
-                    {new Date(goal.dueDate).toLocaleDateString('en-US', {
-                      month: '2-digit',
-                      day: '2-digit',
-                    })}
-                  </p>
-                </div>
-
-                {!goal.isCompleted && (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setScreen('saveMore')
-                    }}
-                    className="mt-4 w-full text-primary text-xs font-semibold hover:underline"
-                  >
-                    + Save More
-                  </button>
-                )}
-              </div>
-            )
-          })
-        )}
+              )
+            })
+          )}
+        </div>
       </div>
     </div>
   )

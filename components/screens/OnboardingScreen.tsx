@@ -11,23 +11,23 @@ const onboardingSteps = [
   {
     step: 1,
     title: 'Save for what matters most.',
-    description: 'Create personalized savings goals and turn dreams into actionable plans',
+    description: 'Create personalized savings goals and turn dreams into actionable plans.',
     icon: '🎯',
-    gradient: 'from-purple-400 to-pink-400',
+    gradient: 'from-[#7c3aed] to-[#4c1d95]',
   },
   {
     step: 2,
-    title: 'Consistency beats intensity',
-    description: 'Build financial habits with streaks, reminders, and daily motivation',
+    title: 'Consistency beats intensity.',
+    description: 'Build financial habits with streaks, reminders, and daily motivation.',
     icon: '⚡',
-    gradient: 'from-purple-500 to-indigo-500',
+    gradient: 'from-[#4f46e5] to-[#7c3aed]',
   },
   {
     step: 3,
     title: 'See every amount move you closer.',
-    description: 'Track your progress with beautiful insights and milestone celebrations',
+    description: 'Track your progress with beautiful insights and milestone celebrations.',
     icon: '📊',
-    gradient: 'from-blue-500 to-purple-500',
+    gradient: 'from-[#0f766e] to-[#7c3aed]',
   },
 ]
 
@@ -48,56 +48,46 @@ export default function OnboardingScreen({ stepNumber }: OnboardingScreenProps) 
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* Status Bar */}
-      <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-sm font-bold">
-          B
-        </div>
-        <span className="text-sm text-muted-foreground">Step {stepNumber} of 3</span>
-      </div>
-
-      {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-32">
-        <div className={`w-32 h-32 rounded-3xl bg-gradient-to-br ${step.gradient} flex items-center justify-center mb-8 text-6xl`}>
-          {step.icon}
+    <div className="min-h-screen bg-[#f4f6fb] px-4 py-4">
+      <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-md flex-col rounded-[32px] border border-white/70 bg-white/90 p-5 shadow-sm backdrop-blur">
+        <div className="flex items-center justify-between">
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary text-sm font-semibold text-white">
+            B
+          </div>
+          <span className="text-sm font-medium text-muted-foreground">Step {stepNumber} of 3</span>
         </div>
 
-        <h2 className="text-4xl font-bold text-center mb-5 text-gray-900">
-          {step.title}
-        </h2>
+        <div className="flex flex-1 flex-col items-center justify-center px-2 pb-12 pt-6 text-center">
+          <div className={`mb-8 flex h-32 w-32 items-center justify-center rounded-[30px] bg-linear-to-br ${step.gradient.replace('from-', '').replace('to-', '')} text-6xl shadow-lg`}>
+            {step.icon}
+          </div>
 
-        <p className="text-center text-gray-600 text-base mb-8 max-w-sm leading-relaxed">
-          {step.description}
-        </p>
+          <h2 className="mb-4 text-3xl font-semibold text-foreground">
+            {step.title}
+          </h2>
 
-        {/* Dots */}
-        <div className="flex gap-2 mb-12">
-          {[1, 2, 3].map((i) => (
-            <div
-              key={i}
-              className={`w-2 h-2 rounded-full ${
-                i === stepNumber ? 'bg-primary w-8' : 'bg-border'
-              } transition-all`}
-            />
-          ))}
+          <p className="mb-8 max-w-sm text-base leading-relaxed text-muted-foreground">
+            {step.description}
+          </p>
+
+          <div className="mb-10 flex gap-2">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className={`h-2 rounded-full transition-all ${i === stepNumber ? 'w-8 bg-primary' : 'w-2 bg-border'}`}
+              />
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* Buttons */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-border px-6 py-5 flex gap-3">
-        <button
-          onClick={handleSkip}
-          className="flex-1 py-4 px-4 border-2 border-gray-400 rounded-lg text-gray-900 font-bold text-base hover:bg-gray-100 transition-colors"
-        >
-          Skip
-        </button>
-        <button
-          onClick={handleNext}
-          className="flex-1 py-4 px-4 bg-purple-700 rounded-lg text-white font-bold text-lg hover:bg-purple-800 transition-colors flex items-center justify-center gap-2"
-        >
-          Continue <ChevronRight size={22} />
-        </button>
+        <div className="flex gap-3">
+          <button onClick={handleSkip} className="flex-1 rounded-2xl border border-border bg-white py-3.5 text-sm font-semibold text-foreground">
+            Skip
+          </button>
+          <button onClick={handleNext} className="flex flex-1 items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 text-sm font-semibold text-white shadow-lg shadow-purple-200">
+            Continue <ChevronRight size={18} />
+          </button>
+        </div>
       </div>
     </div>
   )

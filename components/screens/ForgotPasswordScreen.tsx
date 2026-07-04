@@ -1,6 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
+import { api } from '@/lib/api'
 import { useState } from 'react'
 import { ChevronLeft, Lock, Shield, Eye, EyeOff } from 'lucide-react'
 
@@ -15,14 +16,48 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [statusMessage, setStatusMessage] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
 
-  const handleNext = () => {
-    if (stepNumber === 1) {
-      setScreen('forgotPassword2')
-    } else if (stepNumber === 2) {
-      setScreen('forgotPassword3')
-    } else {
-      setScreen('loginSuccess')
+  const handleNext = async () => {
+    setErrorMessage('')
+    setStatusMessage('')
+    setIsSubmitting(true)
+
+    try {
+      if (stepNumber === 1) {
+        await api.forgotPassword({ email })
+        setStatusMessage('A reset code has been sent to your email.')
+        setScreen('forgotPassword2')
+      } else if (stepNumber === 2) {
+        await api.verifyResetCode({ email, code })
+        setStatusMessage('Code verified. Set a new password below.')
+        setScreen('forgotPassword3')
+      } else {
+        await api.resetPassword({ email, code, newPassword })
+        setStatusMessage('Password updated successfully. You can sign in now.')
+        setScreen('loginSuccess')
+      }
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Request failed')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleResend = async () => {
+    setErrorMessage('')
+    setStatusMessage('')
+    setIsSubmitting(true)
+
+    try {
+      await api.forgotPassword({ email })
+      setStatusMessage('A new reset code has been sent to your email.')
+    } catch (err) {
+      setErrorMessage(err instanceof Error ? err.message : 'Unable to resend code')
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -59,12 +94,15 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
               We&apos;ll send a 6-digit code to this email address
             </p>
 
+            {statusMessage ? <p className="mb-4 text-sm text-emerald-600">{statusMessage}</p> : null}
+            {errorMessage ? <p className="mb-4 text-sm text-red-600">{errorMessage}</p> : null}
+
             <button
-              onClick={handleNext}
-              disabled={!email}
+              onClick={() => void handleNext()}
+              disabled={!email || isSubmitting}
               className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Send Code
+              {isSubmitting ? 'Sending...' : 'Send Code'}
             </button>
           </>
         )}
@@ -87,11 +125,15 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
               />
             </div>
 
+            {statusMessage ? <p className="mb-4 text-sm text-emerald-600">{statusMessage}</p> : null}
+            {errorMessage ? <p className="mb-4 text-sm text-red-600">{errorMessage}</p> : null}
+
             <button
-              onClick={() => setScreen('forgotPassword3')}
-              className="text-sm text-primary hover:underline mb-8"
+              onClick={() => void handleResend()}
+              disabled={isSubmitting}
+              className="text-sm text-primary hover:underline mb-8 disabled:opacity-50"
             >
-              Resend code in 1:52
+              {isSubmitting ? 'Sending...' : 'Resend code'}
             </button>
 
             <p className="text-sm text-muted-foreground mb-6 p-4 bg-secondary rounded-lg">
@@ -100,11 +142,11 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
             </p>
 
             <button
-              onClick={handleNext}
-              disabled={code.length !== 6}
+              onClick={() => void handleNext()}
+              disabled={code.length !== 6 || isSubmitting}
               className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Verify & Continue
+              {isSubmitting ? 'Verifying...' : 'Verify & Continue'}
             </button>
           </>
         )}
@@ -158,12 +200,15 @@ export default function ForgotPasswordScreen({ stepNumber }: ForgotPasswordScree
               </div>
             </div>
 
+            {statusMessage ? <p className="mb-4 text-sm text-emerald-600">{statusMessage}</p> : null}
+            {errorMessage ? <p className="mb-4 text-sm text-red-600">{errorMessage}</p> : null}
+
             <button
-              onClick={handleNext}
-              disabled={newPassword.length < 8 || newPassword !== confirmPassword}
+              onClick={() => void handleNext()}
+              disabled={newPassword.length < 8 || newPassword !== confirmPassword || isSubmitting}
               className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Reset Password
+              {isSubmitting ? 'Updating...' : 'Reset Password'}
             </button>
 
             <button

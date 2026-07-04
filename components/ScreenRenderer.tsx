@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { Home, Target, TrendingUp, User, Plus, ChevronLeft, X } from 'lucide-react'
+import { Home, Target, TrendingUp, User, Plus, X } from 'lucide-react'
 import SplashScreen from './screens/SplashScreen'
 import OnboardingScreen from './screens/OnboardingScreen'
 import SignInScreen from './screens/SignInScreen'
@@ -15,11 +15,20 @@ import GoalCreatedScreen from './screens/GoalCreatedScreen'
 import AnalyticsScreen from './screens/AnalyticsScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import EditProfileScreen from './screens/EditProfileScreen'
+import ChangePasswordScreen from './screens/ChangePasswordScreen'
+import BiometricLoginScreen from './screens/BiometricLoginScreen'
+import TwoStepVerificationScreen from './screens/TwoStepVerificationScreen'
 import NotificationsScreen from './screens/NotificationsScreen'
 import SaveMoreScreen from './screens/SaveMoreScreen'
 import DepositScreen from './screens/DepositScreen'
 import ReviewDepositScreen from './screens/ReviewDepositScreen'
 import DepositSuccessScreen from './screens/DepositSuccessScreen'
+import SavingsScreen from './screens/SavingsScreen'
+import ChallengeScreen from './screens/ChallengeScreen'
+import EmergencyScreen from './screens/EmergencyScreen'
+import LoansScreen from './screens/LoansScreen'
+import InvestmentsScreen from './screens/InvestmentsScreen'
+import AssistantScreen from './screens/AssistantScreen'
 
 export default function ScreenRenderer() {
   const { screen, setScreen } = useApp()
@@ -45,6 +54,9 @@ export default function ScreenRenderer() {
     'reviewDeposit',
     'notifications',
     'editProfile',
+    'changePassword',
+    'biometricLogin',
+    'twoStepVerification',
   ].includes(screen)
 
   const renderScreen = () => {
@@ -81,6 +93,12 @@ export default function ScreenRenderer() {
         return <ProfileScreen />
       case 'editProfile':
         return <EditProfileScreen />
+      case 'changePassword':
+        return <ChangePasswordScreen />
+      case 'biometricLogin':
+        return <BiometricLoginScreen />
+      case 'twoStepVerification':
+        return <TwoStepVerificationScreen />
       case 'notifications':
         return <NotificationsScreen />
       case 'saveMore':
@@ -91,6 +109,18 @@ export default function ScreenRenderer() {
         return <ReviewDepositScreen />
       case 'depositSuccess':
         return <DepositSuccessScreen />
+      case 'savings':
+        return <SavingsScreen />
+      case 'challenge':
+        return <ChallengeScreen />
+      case 'emergency':
+        return <EmergencyScreen />
+      case 'loans':
+        return <LoansScreen />
+      case 'investments':
+        return <InvestmentsScreen />
+      case 'assistant':
+        return <AssistantScreen />
       default:
         return <Dashboard />
     }
@@ -101,18 +131,18 @@ export default function ScreenRenderer() {
   }
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <div className="min-h-screen bg-[#f4f6fb] flex flex-col">
       {isModalScreen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-40" onClick={() => setScreen('dashboard')} />
+        <div className="fixed inset-0 bg-black/50 z-40" onClick={() => setScreen('dashboard')} />
       )}
 
-      <main className={`flex-1 overflow-y-auto ${isModalScreen ? 'overflow-hidden' : 'pb-20'}`}>
+      <main className={`flex-1 overflow-y-auto ${isModalScreen ? 'overflow-hidden' : 'pb-24'}`}>
         {renderScreen()}
       </main>
 
       {!isModalScreen && (
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border z-50">
-          <div className="flex justify-around items-center h-20 max-w-md mx-auto">
+        <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/70 bg-white/90 backdrop-blur-xl">
+          <div className="mx-auto flex h-20 max-w-md items-center justify-around px-2">
             <NavButton icon={Home} label="Home" screen="dashboard" />
             <NavButton icon={Target} label="Goals" screen="goals" />
             <FloatingButton />
@@ -125,9 +155,9 @@ export default function ScreenRenderer() {
       {isModalScreen && (
         <button
           onClick={() => setScreen('dashboard')}
-          className="fixed top-6 right-6 z-50 p-2 bg-white rounded-full shadow-lg"
+          className="fixed right-6 top-6 z-50 rounded-full bg-white p-2.5 shadow-lg"
         >
-          <X size={24} className="text-foreground" />
+          <X size={22} className="text-foreground" />
         </button>
       )}
     </div>
@@ -149,14 +179,12 @@ function NavButton({
   return (
     <button
       onClick={() => setScreen(screen as any)}
-      className={`flex flex-col items-center justify-center w-16 h-16 rounded-lg transition-colors ${
-        isActive
-          ? 'bg-primary text-white'
-          : 'text-muted-foreground hover:bg-secondary'
+      className={`flex h-14 w-14 flex-col items-center justify-center rounded-2xl text-[11px] font-semibold transition-all ${
+        isActive ? 'bg-primary text-white shadow-lg shadow-purple-200' : 'text-muted-foreground hover:bg-secondary'
       }`}
     >
-      <Icon size={24} />
-      <span className="text-xs mt-1">{label}</span>
+      <Icon size={20} />
+      <span className="mt-1">{label}</span>
     </button>
   )
 }
@@ -166,9 +194,9 @@ function FloatingButton() {
   return (
     <button
       onClick={() => setScreen('newDeposit')}
-      className="flex flex-col items-center justify-center w-16 h-16 rounded-full bg-primary text-white hover:bg-opacity-90 transform -translate-y-6 shadow-lg"
+      className="flex h-16 w-16 -translate-y-5 flex-col items-center justify-center rounded-full bg-primary text-white shadow-xl shadow-purple-300 transition-transform hover:scale-105"
     >
-      <Plus size={32} />
+      <Plus size={28} />
     </button>
   )
 }

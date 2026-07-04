@@ -1,10 +1,31 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
+import { api } from '@/lib/api'
+import { useState } from 'react'
 import { X } from 'lucide-react'
 
 export default function DepositScreen() {
-  const { setScreen } = useApp()
+  const { setScreen, goals } = useApp()
+  const [selectedGoal, setSelectedGoal] = useState(goals[0]?.id || '')
+  const [amount, setAmount] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleContinue = async () => {
+    if (!selectedGoal || !amount) return
+    setLoading(true)
+    setError('')
+    try {
+      await api.depositGoal(selectedGoal, Number(amount))
+      setScreen('reviewDeposit')
+    } catch (err) {
+      const errorMsg = err instanceof Error ? err.message : 'Unable to save right now'
+      setError(errorMsg)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50">
@@ -19,11 +40,13 @@ export default function DepositScreen() {
         <div className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-foreground mb-2">Saving Towards</label>
-            <select className="w-full px-4 py-3 border border-border rounded-lg bg-input focus:outline-none focus:ring-2 focus:ring-primary">
-              <option>Select goal</option>
-              <option>New MacBook Air</option>
-              <option>Dubai Trip</option>
-              <option>Master's Degree</option>
+            <select value={selectedGoal} onChange={(e) => setSelectedGoal(e.target.value)} className="w-full px-4 py-3 border border-border rounded-lg bg-input focus:outline-none focus:ring-2 focus:ring-primary">
+              <option value="">Select goal</option>
+              {goals.map((goal) => (
+                <option key={goal.id} value={goal.id}>
+                  {goal.name}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -34,7 +57,8 @@ export default function DepositScreen() {
               <input
                 type="number"
                 placeholder="0.00"
-                defaultValue=""
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
                 className="w-full pl-8 pr-4 py-3 border border-border rounded-lg bg-input focus:outline-none focus:ring-2 focus:ring-primary text-lg"
               />
             </div>
@@ -57,6 +81,8 @@ export default function DepositScreen() {
           </div>
         </div>
 
+        {error ? <p className="mt-3 text-sm text-red-600">{error}</p> : null}
+
         <div className="flex gap-3 mt-6">
           <button
             onClick={() => setScreen('dashboard')}
@@ -65,10 +91,11 @@ export default function DepositScreen() {
             Cancel
           </button>
           <button
-            onClick={() => setScreen('reviewDeposit')}
-            className="flex-1 py-3 px-4 bg-primary rounded-lg text-white font-semibold hover:bg-opacity-90 transition-colors"
+            onClick={handleContinue}
+            disabled={loading || !selectedGoal || !amount}
+            className="flex-1 py-3 px-4 bg-primary rounded-lg text-white font-semibold hover:bg-opacity-90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Continue
+            {loading ? 'Saving…' : 'Continue'}
           </button>
         </div>
       </div>

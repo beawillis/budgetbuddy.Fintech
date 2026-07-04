@@ -1,178 +1,158 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { Bell, ArrowUpRight, Zap, TrendingDown, Flame, Clock } from 'lucide-react'
+import { ArrowUpRight, Bell, Clock, PiggyBank, Sparkles, Target, Wallet } from 'lucide-react'
 
 export default function Dashboard() {
-  const { setScreen, transactions, goals, user } = useApp()
+  const { setScreen, transactions, goals, user, walletBalance, monthlyIncome, monthlyExpense } = useApp()
 
   const totalSaved = goals.reduce((sum, goal) => sum + goal.currentAmount, 0)
   const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0)
   const savingsPercentage = Math.round((totalSaved / totalTarget) * 100) || 0
+  const activeGoal = goals.find((goal) => !goal.isCompleted) || goals[0] || null
+
+  const quickActions = [
+    { label: 'Deposit', icon: '💰', onClick: () => setScreen('newDeposit') },
+    { label: 'Goals', icon: '🎯', onClick: () => setScreen('goals') },
+    { label: 'Analytics', icon: '📈', onClick: () => setScreen('analytics') },
+    { label: 'Savings', icon: '🏦', onClick: () => setScreen('savings') },
+    { label: 'Challenge', icon: '🏁', onClick: () => setScreen('challenge') },
+    { label: 'Emergency', icon: '🛟', onClick: () => setScreen('emergency') },
+    { label: 'Loans', icon: '💳', onClick: () => setScreen('loans') },
+    { label: 'Invest', icon: '📈', onClick: () => setScreen('investments') },
+    { label: 'Assistant', icon: '🤖', onClick: () => setScreen('assistant') },
+  ]
+
+  const recentActivity = transactions.slice(0, 3)
 
   return (
-    <div className="bg-background min-h-screen">
-      {/* Header */}
-      <div className="bg-white border-b border-border sticky top-0 z-10">
-        <div className="px-6 py-5 flex items-center justify-between">
+    <div className="mx-auto flex w-full max-w-md flex-col gap-4 px-4 py-4 pb-24">
+      <header className="rounded-[28px] border border-white/70 bg-white/90 p-4 shadow-sm backdrop-blur">
+        <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-xs font-medium text-muted-foreground tracking-wide">Good morning</h2>
-            <h1 className="text-3xl font-bold text-foreground mt-1">Tennyson 👋</h1>
+            <p className="text-sm font-medium text-muted-foreground">Good morning, {user?.name?.split(' ')[0] || 'there'}</p>
+            <h1 className="text-2xl font-semibold text-foreground">BudgetBuddy</h1>
           </div>
-          <button
-            onClick={() => setScreen('notifications')}
-            className="p-3 bg-secondary rounded-full relative hover:bg-opacity-80"
-          >
-            <Bell size={20} className="text-foreground" />
-            <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-red-500 rounded-full" />
+          <button onClick={() => setScreen('notifications')} className="rounded-full bg-[#f2ebff] p-2.5 text-primary">
+            <Bell size={20} />
           </button>
         </div>
-      </div>
+      </header>
 
-      {/* Content */}
-      <div className="px-6 py-6 space-y-6">
-        {/* 7 Day Streak */}
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 flex items-center justify-between">
+      <section className="rounded-[28px] bg-linear-to-br from-[#7c3aed] via-[#6d28d9] to-[#4c1d95] p-5 text-white shadow-xl shadow-purple-200">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-sm text-white/80">Total savings</p>
+            <p className="mt-2 text-3xl font-semibold">₦{walletBalance.toLocaleString()}</p>
+          </div>
+          <div className="rounded-full bg-white/15 p-2.5">
+            <PiggyBank size={18} />
+          </div>
+        </div>
+        <div className="mt-5 flex items-center gap-2 rounded-full bg-white/15 px-3 py-2 text-sm text-white/90">
+          <Sparkles size={16} />
+          {savingsPercentage}% of your monthly goal is already saved
+        </div>
+        <div className="mt-5 grid grid-cols-3 gap-2">
+          <div className="rounded-2xl bg-white/10 px-2 py-3 text-center">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/70">Saved this month</p>
+            <p className="mt-1 text-sm font-semibold">₦{monthlyIncome.toLocaleString()}</p>
+          </div>
+          <div className="rounded-2xl bg-white/10 px-2 py-3 text-center">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/70">Daily streak</p>
+            <p className="mt-1 text-sm font-semibold">{goals.filter((goal) => goal.isCompleted).length} goals</p>
+          </div>
+          <div className="rounded-2xl bg-white/10 px-2 py-3 text-center">
+            <p className="text-[10px] uppercase tracking-[0.2em] text-white/70">Goal progress</p>
+            <p className="mt-1 text-sm font-semibold">{savingsPercentage}%</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="grid grid-cols-3 gap-2">
+        {quickActions.map((action) => (
+          <button key={action.label} onClick={action.onClick} className="rounded-[22px] border border-border bg-white p-3 text-center shadow-sm">
+            <div className="mb-2 flex justify-center text-xl">{action.icon}</div>
+            <p className="text-xs font-semibold text-foreground">{action.label}</p>
+          </button>
+        ))}
+      </section>
+
+      <section className="rounded-[28px] border border-border bg-white p-4 shadow-sm">
+        <div className="mb-3 flex items-center justify-between">
+          <div>
+            <p className="text-sm font-semibold text-foreground">Active goal</p>
+            <p className="text-xs text-muted-foreground">{activeGoal?.name || 'No active goal'}</p>
+          </div>
+          <button onClick={() => setScreen('goals')} className="text-sm font-semibold text-primary">
+            View all
+          </button>
+        </div>
+        <div className="rounded-[22px] bg-[#f8f5ff] p-4">
+          <div className="mb-3 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="rounded-full bg-primary/10 p-2 text-primary">
+                <Target size={16} />
+              </div>
+              <div>
+                <p className="font-semibold text-foreground">₦{(activeGoal?.currentAmount || 0).toLocaleString()} of ₦{(activeGoal?.targetAmount || 0).toLocaleString()}</p>
+                <p className="text-xs text-muted-foreground">Due {activeGoal ? new Date(activeGoal.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'soon'}</p>
+              </div>
+            </div>
+            <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">{Math.round(((activeGoal?.currentAmount || 0) / Math.max(activeGoal?.targetAmount || 1, 1)) * 100)}%</span>
+          </div>
+          <div className="h-2.5 w-full rounded-full bg-white">
+            <div className="h-2.5 rounded-full bg-emerald-500" style={{ width: `${Math.min(100, Math.round(((activeGoal?.currentAmount || 0) / Math.max(activeGoal?.targetAmount || 1, 1)) * 100))}%` }} />
+          </div>
+        </div>
+      </section>
+
+      <section className="rounded-[28px] border border-border bg-white p-4 shadow-sm">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-sm font-semibold text-foreground">Today&apos;s focus</p>
+          <span className="text-xs font-semibold text-primary">7 day streak</span>
+        </div>
+        <div className="flex items-center justify-between rounded-[20px] bg-[#f8fafc] p-3">
           <div className="flex items-center gap-3">
-            <span className="text-4xl">🔥</span>
+            <div className="rounded-full bg-amber-100 p-2 text-amber-600">
+              <Clock size={16} />
+            </div>
             <div>
-              <p className="font-bold text-base text-foreground">7 Day Break</p>
-              <p className="text-xs text-muted-foreground mt-1">Great efforts today! Do it tomorrow</p>
+              <p className="text-sm font-semibold text-foreground">Next Reminder</p>
+              <p className="text-xs text-muted-foreground">{monthlyExpense > 0 ? `Review your spending • ₦${Math.round(monthlyExpense / 10).toLocaleString()}` : 'Keep your streak alive'}</p>
             </div>
           </div>
+          <button className="text-sm font-semibold text-primary">Set</button>
         </div>
+      </section>
 
-        {/* Savings Overview Card */}
-        <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-3xl p-8 text-white overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500 rounded-full opacity-20 -mr-20 -mt-20" />
-          <div className="relative z-10">
-            <p className="text-xs font-medium opacity-90 mb-3 tracking-wide">Total Savings</p>
-            <h3 className="text-5xl font-bold mb-4 text-white">₦2,450,500</h3>
-            <p className="text-sm opacity-80">↑ 12% vs last month</p>
-          </div>
-          <div className="absolute bottom-4 right-6">
-            <div className="w-16 h-16 bg-purple-500 rounded-full opacity-10" />
-          </div>
-        </div>
-
-        {/* Quick Actions */}
-        <div className="grid grid-cols-3 gap-4">
-          <button
-            onClick={() => setScreen('newDeposit')}
-            className="bg-white border border-border rounded-xl p-5 text-center hover:bg-secondary transition-colors"
-          >
-            <div className="text-3xl mb-3">💰</div>
-            <p className="text-xs font-semibold text-foreground leading-tight">Quick Deposit</p>
-          </button>
-          <button className="bg-white border border-border rounded-xl p-5 text-center hover:bg-secondary transition-colors">
-            <div className="text-3xl mb-3">💸</div>
-            <p className="text-xs font-semibold text-foreground leading-tight">Send Money</p>
-          </button>
-          <button className="bg-white border border-border rounded-xl p-5 text-center hover:bg-secondary transition-colors">
-            <div className="text-3xl mb-3">🏦</div>
-            <p className="text-xs font-semibold text-foreground leading-tight">Loan Tracker</p>
+      <section className="rounded-[28px] border border-border bg-white p-4 shadow-sm">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-sm font-semibold text-foreground">Recent activity</p>
+          <button onClick={() => setScreen('analytics')} className="text-sm font-semibold text-primary">
+            View all
           </button>
         </div>
-
-        {/* Active Goal */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-foreground">Active Goal</h3>
-            <button className="text-primary text-xs font-semibold hover:underline">View All</button>
-          </div>
-
-          {goals.filter(g => !g.isCompleted).length > 0 && (
-            <div className="bg-white border border-border rounded-xl p-5">
-              {goals
-                .filter(g => !g.isCompleted)
-                .slice(0, 1)
-                .map(goal => {
-                  const progress = (goal.currentAmount / goal.targetAmount) * 100
-                  return (
-                    <div key={goal.id}>
-                      <div className="flex items-start justify-between mb-4">
-                        <div className="flex-1">
-                          <p className="text-3xl mb-2">{goal.icon}</p>
-                          <h4 className="font-bold text-base text-foreground">{goal.name}</h4>
-                          <p className="text-xs text-muted-foreground mt-1">
-                            ₦{goal.currentAmount.toLocaleString()} of ₦{goal.targetAmount.toLocaleString()}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-2xl font-bold text-green-500">{Math.round(progress)}%</p>
-                          <p className="text-xs text-muted-foreground">Completed</p>
-                        </div>
-                      </div>
-                      <div className="w-full bg-border rounded-full h-2.5 mb-4">
-                        <div
-                          className="bg-green-500 h-2.5 rounded-full transition-all"
-                          style={{ width: `${progress}%` }}
-                        />
-                      </div>
-                      <p className="text-xs text-muted-foreground">
-                        📅 Jun 15, 2026 • 🏁 5 days remaining
-                      </p>
-                    </div>
-                  )
-                })}
-            </div>
-          )}
-        </div>
-
-        {/* Daily Habit */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-foreground">Daily Habit</h3>
-            <button className="text-primary text-xs font-semibold hover:underline">View Calendar</button>
-          </div>
-
-          <div className="space-y-3">
-            <div className="bg-white border border-border rounded-xl p-4 flex items-center justify-between">
+        <div className="space-y-2">
+          {recentActivity.map((item) => (
+            <div key={item.id} className="flex items-center justify-between rounded-[18px] bg-[#f8fafc] px-3 py-3">
               <div className="flex items-center gap-3">
-                <Flame className="text-orange-500" size={20} />
-                <div>
-                  <p className="font-semibold text-base text-foreground">7 Day Streak 🔥</p>
-                  <p className="text-xs text-muted-foreground mt-1">You&apos;re on fire! Keep it up</p>
+                <div className={`rounded-full p-2 ${item.type === 'deposit' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
+                  <Wallet size={16} />
                 </div>
+                <div>
+                  <p className="text-sm font-semibold text-foreground">{item.title}</p>
+                  <p className="text-xs text-muted-foreground">{item.date}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1 text-sm font-semibold text-foreground">
+                {item.type === 'deposit' ? '+' : '-'}₦{item.amount.toLocaleString()}
+                <ArrowUpRight size={14} className="text-muted-foreground" />
               </div>
             </div>
-            <div className="bg-white border border-border rounded-xl p-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Clock className="text-purple-500" size={20} />
-                <div>
-                  <p className="font-semibold text-base text-foreground">Next Reminder</p>
-                  <p className="text-xs text-muted-foreground mt-1">6:00 PM</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
-
-        {/* Recent Activity */}
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-foreground">Recent Activity</h3>
-            <button className="text-primary text-xs font-semibold hover:underline">View All</button>
-          </div>
-
-          <div className="space-y-3">
-            {transactions.slice(0, 4).map(transaction => (
-              <div key={transaction.id} className="bg-white border border-border rounded-xl p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="text-2xl">{transaction.icon}</div>
-                  <div>
-                    <p className="font-semibold text-base text-foreground">{transaction.title}</p>
-                    <p className="text-xs text-muted-foreground mt-1">{transaction.date}</p>
-                  </div>
-                </div>
-                <p className={`font-bold text-sm ${transaction.type === 'deposit' ? 'text-green-500' : 'text-foreground'}`}>
-                  {transaction.type === 'deposit' ? '+' : '-'}₦{transaction.amount.toLocaleString()}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { Bell, CheckCircle2, TrendingUp, AlertCircle, Zap } from 'lucide-react'
+import { Bell, CheckCircle2, TrendingUp, AlertCircle, Zap, Clock } from 'lucide-react'
 
 export default function NotificationsScreen() {
   const { setScreen } = useApp()
@@ -45,12 +45,10 @@ export default function NotificationsScreen() {
     },
   ]
 
-  const Clock = Bell
-
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black bg-opacity-50">
-      <div className="bg-white w-full max-w-md rounded-t-3xl p-6 max-h-[80vh] overflow-y-auto">
-        <div className="flex items-center justify-between mb-6 sticky top-0 bg-white pb-4">
+    <div className="p-6">
+      <div className="max-w-3xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
           <h1 className="text-2xl font-bold text-foreground">Notifications</h1>
           <button onClick={() => setScreen('dashboard')} className="text-primary text-sm font-semibold hover:underline">
             Mark all
@@ -58,35 +56,39 @@ export default function NotificationsScreen() {
         </div>
 
         <div className="space-y-3">
-          {notifications.map(notif => (
-            <div
-              key={notif.id}
-              className={`p-4 rounded-lg border transition-colors cursor-pointer hover:bg-secondary ${
-                notif.isRead ? 'bg-white border-border' : 'bg-primary bg-opacity-5 border-primary'
-              }`}
-            >
-              <div className="flex gap-3">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                  notif.type === 'success' ? 'bg-green-100 text-green-600' :
-                  notif.type === 'warning' ? 'bg-yellow-100 text-yellow-600' :
-                  notif.type === 'reminder' ? 'bg-blue-100 text-blue-600' :
-                  'bg-purple-100 text-purple-600'
-                }`}>
-                  <Bell size={20} />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="font-bold text-foreground text-sm">{notif.title}</h3>
-                    {!notif.isRead && (
-                      <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0 mt-1" />
-                    )}
+          {notifications.map(notif => {
+            const Icon = notif.icon
+
+            return (
+              <div
+                key={notif.id}
+                className={`p-4 rounded-lg border transition-colors cursor-pointer hover:bg-secondary ${
+                  notif.isRead ? 'bg-white border-border' : 'bg-primary bg-opacity-5 border-primary'
+                }`}
+              >
+                <div className="flex gap-3">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${
+                    notif.type === 'success' ? 'bg-green-100 text-green-600' :
+                    notif.type === 'warning' ? 'bg-yellow-100 text-yellow-600' :
+                    notif.type === 'reminder' ? 'bg-blue-100 text-blue-600' :
+                    'bg-purple-100 text-purple-600'
+                  }`}>
+                    <Icon size={20} />
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{notif.message}</p>
-                  <p className="text-xs text-muted-foreground mt-2">{notif.time}</p>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="font-bold text-foreground text-sm">{notif.title}</h3>
+                      {!notif.isRead && (
+                        <div className="w-2 h-2 rounded-full bg-primary shrink-0 mt-1" />
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1 line-clamp-2">{notif.message}</p>
+                    <p className="text-xs text-muted-foreground mt-2">{notif.time}</p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         <button

@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, Sparkles } from 'lucide-react'
 
 interface SuccessScreenProps {
   type: 'login' | 'signup'
@@ -15,48 +15,40 @@ export default function SuccessScreen({ type }: SuccessScreenProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col items-center justify-center px-6">
-      <div className="text-center">
-        <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 className="text-green-500" size={48} />
+    <div className="min-h-screen bg-[#f4f6fb] px-4 py-4">
+      <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-md flex-col items-center justify-center rounded-[32px] border border-white/70 bg-white/90 p-6 text-center shadow-sm backdrop-blur">
+        <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+          <CheckCircle2 size={44} />
         </div>
 
         {type === 'login' ? (
           <>
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Welcome Back</h1>
-            <p className="text-muted-foreground mb-4 text-lg">
-              Loading your dashboard...
-            </p>
+            <h1 className="text-3xl font-semibold text-foreground">Welcome back</h1>
+            <p className="mt-3 text-base text-muted-foreground">Your dashboard is ready and waiting for you.</p>
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-bold mb-2 text-foreground">Account Created Successfully! 🎉</h1>
-            <p className="text-muted-foreground mb-8">
-              Welcome to BudgetBuddy. Your savings journey starts today!
-            </p>
+            <h1 className="text-3xl font-semibold text-foreground">Account created</h1>
+            <p className="mt-3 text-base text-muted-foreground">Welcome to BudgetBuddy. Your savings journey starts today.</p>
 
-            <div className="bg-secondary rounded-lg p-6 mb-8 w-full max-w-sm">
-              <p className="text-sm text-muted-foreground mb-2">💡 Pro Tip</p>
-              <p className="text-foreground">
-                For access to your account on this device, you&apos;re tracked money on BudgetBuddy. You can manage settings in your profile.
+            <div className="mt-6 w-full rounded-[24px] bg-[#f8f5ff] p-4 text-left">
+              <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-primary">
+                <Sparkles size={16} /> Pro tip
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                Start with a small daily deposit and build momentum with streaks, reminders, and goal tracking.
               </p>
             </div>
           </>
         )}
 
-        <button
-          onClick={handleContinue}
-          className="w-full max-w-sm bg-primary text-white py-3 rounded-lg font-semibold hover:bg-opacity-90"
-        >
-          {type === 'login' ? 'Continue to Dashboard' : 'Create My First Goal'}
+        <button onClick={handleContinue} className="mt-8 w-full rounded-2xl bg-primary py-3.5 text-base font-semibold text-white shadow-lg shadow-purple-200">
+          {type === 'login' ? 'Continue to dashboard' : 'Create my first goal'}
         </button>
 
         {type === 'signup' && (
-          <button
-            onClick={() => setScreen('dashboard')}
-            className="w-full max-w-sm mt-3 text-center text-primary font-semibold hover:underline"
-          >
-            Maybe Later
+          <button onClick={() => setScreen('dashboard')} className="mt-3 text-sm font-semibold text-primary">
+            Maybe later
           </button>
         )}
       </div>
