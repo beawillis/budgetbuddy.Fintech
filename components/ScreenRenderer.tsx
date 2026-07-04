@@ -1,7 +1,7 @@
 'use client'
 
 import { useApp } from '@/lib/AppContext'
-import { Home, ReceiptText, Target, TrendingUp, User, Plus, X } from 'lucide-react'
+import { BotMessageSquare, Home, ReceiptText, Target, TrendingUp, User, Plus, X } from 'lucide-react'
 import SplashScreen from './screens/SplashScreen'
 import OnboardingScreen from './screens/OnboardingScreen'
 import SignInScreen from './screens/SignInScreen'
@@ -147,6 +147,7 @@ export default function ScreenRenderer() {
               <div className="mx-auto flex h-20 max-w-3xl items-center justify-around px-2 sm:max-w-4xl lg:max-w-none lg:px-6">
                 <NavButton icon={Home} label="Home" screen="dashboard" />
                 <NavButton icon={Target} label="Goals" screen="goals" />
+                <NavButton icon={BotMessageSquare} label="Assistant" screen="assistant" />
                 <FloatingButton />
                 <NavButton icon={ReceiptText} label="Activity" screen="transactions" />
                 <NavButton icon={TrendingUp} label="Reports" screen="analytics" />

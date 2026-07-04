@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { useApp } from '@/lib/AppContext'
 import { api } from '@/lib/api'
 import { useState } from 'react'
@@ -92,11 +93,8 @@ export default function SignInScreen() {
           <button onClick={() => setScreen('onboarding1')} className="rounded-full bg-[#f2ebff] p-2.5 text-primary">
             <ChevronLeft size={20} />
           </button>
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
-            <div
-              className="h-12 w-12 rounded-full bg-no-repeat bg-center"
-              style={{ backgroundImage: "url('/logo.png')", backgroundSize: 'auto 180%', backgroundPosition: 'center' }}
-            />
+          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-white p-2 shadow-sm">
+            <Image src="/logo.png" alt="BudgetBuddy logo" width={48} height={48} className="h-full w-full object-contain" />
           </div>
         </div>
 

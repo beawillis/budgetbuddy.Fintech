@@ -52,22 +52,15 @@ export default function OnboardingScreen({ stepNumber }: OnboardingScreenProps) 
     <div className="min-h-screen bg-[#f4f6fb] px-4 py-4">
       <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-md flex-col rounded-[32px] border border-white/70 bg-white/90 p-5 shadow-sm backdrop-blur">
         <div className="flex items-center justify-between">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-sm">
-            <div
-              className="h-8 w-8 rounded-full bg-no-repeat bg-center"
-              style={{ backgroundImage: "url('/logo.png')", backgroundSize: 'auto 220%', backgroundPosition: '12% center' }}
-            />
+          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white p-2 shadow-sm">
+            <Image src="/logo.png" alt="BudgetBuddy logo" width={36} height={36} className="h-full w-full object-contain" />
           </div>
           <span className="text-sm font-medium text-muted-foreground">Step {stepNumber} of 3</span>
         </div>
 
         <div className="flex flex-1 flex-col items-center justify-center px-2 pb-12 pt-6 text-center">
-          <div className="mb-8 flex h-32 w-32 items-center justify-center">
-            <div className={`rounded-[18px] bg-white p-4 shadow-lg`}>
-              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-[12px]">
-                <Image src="/logo.png" alt="BudgetBuddy logo" width={80} height={80} className="h-full w-full object-contain" />
-              </div>
-            </div>
+          <div className="mb-8 flex h-32 w-32 items-center justify-center rounded-full bg-white p-5 shadow-lg shadow-slate-200">
+            <Image src="/logo.png" alt="BudgetBuddy logo" width={112} height={112} className="h-full w-full object-contain" />
           </div>
 
           <h2 className="mb-4 text-3xl font-semibold text-foreground">
