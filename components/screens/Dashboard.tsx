@@ -164,6 +164,21 @@ export default function Dashboard() {
           ))}
         </div>
       </section>
+      <section className="rounded-[28px] bg-gradient-to-r from-indigo-500 to-blue-600 p-5 text-white shadow-sm">
+  <div className="flex items-center gap-3">
+    <div className="rounded-full bg-white/20 p-2">
+      <Sparkles size={18} />
+    </div>
+
+    <div>
+      <h3 className="font-semibold">AI Financial Insight</h3>
+      <p className="mt-1 text-sm text-white/90">
+        Great job! You have saved {savingsPercentage}% of your target.
+        Keep saving consistently to achieve your financial goal.
+      </p>
+    </div>
+  </div>
+</section>
     </div>
   )
 }
