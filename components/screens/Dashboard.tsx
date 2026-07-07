@@ -160,6 +160,12 @@ export default function Dashboard() {
                 {item.type === 'deposit' ? '+' : '-'}₦{item.amount.toLocaleString()}
                 <ArrowUpRight size={14} className="text-muted-foreground" />
               </div>
+              <button
+  onClick={() => setScreen('newDeposit')}
+  className="fixed bottom-24 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-3xl text-white shadow-lg hover:scale-105 transition"
+>
+  +
+</button>
             </div>
           ))}
         </div>
