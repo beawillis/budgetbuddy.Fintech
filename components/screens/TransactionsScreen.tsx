@@ -190,9 +190,33 @@ export default function TransactionsScreen() {
             <p className="text-sm font-semibold text-foreground">All transactions</p>
             <p className="text-xs font-semibold text-muted-foreground">{transactions.length} total</p>
           </div>
+          <input
+  type="text"
+  placeholder="🔍 Search transactions..."
+  className="mb-4 w-full rounded-2xl border border-border bg-input px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
+/>
+          <div className="mb-4 flex gap-2 overflow-x-auto">
+
+<button className="rounded-full bg-primary px-4 py-2 text-sm text-white">
+All
+</button>
+
+<button className="rounded-full bg-gray-100 px-4 py-2 text-sm">
+Income
+</button>
+
+<button className="rounded-full bg-gray-100 px-4 py-2 text-sm">
+Expense
+</button>
+
+<button className="rounded-full bg-gray-100 px-4 py-2 text-sm">
+Deposit
+</button>
+
+</div>
           <div className="space-y-2">
             {transactions.length ? transactions.map((transaction) => (
-              <div key={transaction.id} className="flex items-center justify-between gap-3 rounded-[18px] bg-[#f8fafc] px-3 py-3">
+              <div key={transaction.id} className="flex items-center justify-between gap-3 rounded-[20px] border border-gray-100 bg-white px-4 py-4 shadow-sm hover:shadow-md transition"
                 <div className="flex min-w-0 items-center gap-3">
                   <div className={`rounded-full p-2 ${
                     transaction.type === 'expense' ? 'bg-rose-100 text-rose-600' : 'bg-emerald-100 text-emerald-600'
