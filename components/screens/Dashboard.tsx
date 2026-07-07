@@ -145,29 +145,56 @@ export default function Dashboard() {
           </button>
         </div>
         <div className="space-y-2">
+          {recentActivity.length === 0 && (
+  <div className="rounded-xl bg-gray-50 p-6 text-center text-gray-500">
+    No recent transactions yet.
+  </div>
+)}
           {recentActivity.map((item) => (
-            <div key={item.id} className="flex items-center justify-between rounded-[18px] bg-[#f8fafc] px-3 py-3">
-              <div className="flex items-center gap-3">
-                <div className={`rounded-full p-2 ${item.type === 'deposit' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
-                  <Wallet size={16} />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-foreground">{item.title}</p>
-                  <p className="text-xs text-muted-foreground">{item.date}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-sm font-semibold text-foreground">
-                {item.type === 'deposit' ? '+' : '-'}₦{item.amount.toLocaleString()}
-                <ArrowUpRight size={14} className="text-muted-foreground" />
-              </div>
-              <button
-  onClick={() => setScreen('newDeposit')}
-  className="fixed bottom-24 right-6 flex h-14 w-14 items-center justify-center rounded-full bg-purple-600 text-3xl text-white shadow-lg hover:scale-105 transition"
->
-  +
-</button>
-            </div>
-          ))}
+  <div
+    key={item.id}
+    className="flex items-center justify-between rounded-[18px] bg-[#f8fafc] px-4 py-3 hover:bg-[#f3f4f6] transition"
+  >
+    <div className="flex items-center gap-3">
+      <div
+        className={`rounded-full p-3 ${
+          item.type === 'deposit'
+            ? 'bg-green-100 text-green-600'
+            : 'bg-red-100 text-red-600'
+        }`}
+      >
+        {item.type === 'deposit' ? (
+          <PiggyBank size={18} />
+        ) : (
+          <Wallet size={18} />
+        )}
+      </div>
+
+      <div>
+        <p className="font-semibold">{item.title}</p>
+        <p className="text-xs text-gray-500">{item.date}</p>
+      </div>
+    </div>
+
+    <div className="text-right">
+      <p
+        className={`font-bold ${
+          item.type === 'deposit'
+            ? 'text-green-600'
+            : 'text-red-600'
+        }`}
+      >
+        {item.type === 'deposit' ? '+' : '-'}₦
+        {item.amount.toLocaleString()}
+      </p>
+
+      <span className="rounded-full bg-green-100 px-2 py-1 text-[10px] font-semibold text-green-700">
+        Completed
+      </span>
+    </div>
+  </div>
+))}
+            
         </div>
       </section>
       <section className="rounded-[28px] bg-gradient-to-r from-indigo-500 to-blue-600 p-5 text-white shadow-sm">
