@@ -255,8 +255,10 @@ Deposit
               </div>
             )) : (
               <div className="rounded-[18px] bg-[#f8fafc] px-3 py-6 text-center">
-                <p className="text-sm font-semibold text-foreground">No transactions yet</p>
-                <p className="mt-1 text-xs text-muted-foreground">Add income, expenses, or deposits above.</p>
+                <p className="text-sm font-semibold text-foreground">
+  No matching transactions found
+</p>
+                <p className="mt-1 text-xs text-muted-foreground"> Try another search or add a new transaction. .</p>
               </div>
             )}
           </div>
