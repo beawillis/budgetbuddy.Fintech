@@ -19,12 +19,19 @@ export default function TransactionsScreen() {
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState('')
   const [search, setSearch] = useState('')
+  const [filter, setFilter] = useState<'all' | TransactionType>('all')
 
   const totals = useMemo(() => {
-    const filteredTransactions = transactions.filter((transaction) =>
-  transaction.title.toLowerCase().includes(search.toLowerCase()) ||
-  transaction.category.toLowerCase().includes(search.toLowerCase())
-)
+    const filteredTransactions = transactions.filter((transaction) => {
+  const matchesSearch =
+    transaction.title.toLowerCase().includes(search.toLowerCase()) ||
+    transaction.category.toLowerCase().includes(search.toLowerCase())
+
+  const matchesFilter =
+    filter === 'all' || transaction.type === filter
+
+  return matchesSearch && matchesFilter
+})
     return transactions.reduce(
       (acc, transaction) => {
         if (transaction.type === 'expense') acc.expense += transaction.amount
