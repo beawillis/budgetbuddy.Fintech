@@ -133,7 +133,14 @@ export default function Dashboard() {
           </div>
           <div className="h-2.5 w-full rounded-full bg-white">
             <div className="h-2.5 rounded-full bg-emerald-500" style={{
-  width: `${activeGoalPercentage}%`
+  width: `${Math.min(
+    100,
+    Math.round(
+      ((activeGoal?.currentAmount || 0) /
+        Math.max(activeGoal?.targetAmount || 1, 1)) *
+        100
+    )
+  )}%`
 }}
           </div>
         </div>
