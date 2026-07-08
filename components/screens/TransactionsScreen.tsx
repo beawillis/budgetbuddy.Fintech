@@ -213,26 +213,54 @@ export default function TransactionsScreen() {
   onChange={(e) => setSearch(e.target.value)}
   placeholder="🔍 Search transactions..."
   className="mb-4 w-full rounded-2xl border border-border bg-input px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
-/>
-          <div className="mb-4 flex gap-2 overflow-x-auto">
+            <div className="mb-4 flex gap-2 overflow-x-auto">
+  <button
+    onClick={() => setFilter('all')}
+    className={`rounded-full px-4 py-2 text-sm ${
+      filter === 'all'
+        ? 'bg-primary text-white'
+        : 'bg-gray-100'
+    }`}
+  >
+    All
+  </button>
 
-<button className="rounded-full bg-primary px-4 py-2 text-sm text-white">
-All
-</button>
+  <button
+    onClick={() => setFilter('income')}
+    className={`rounded-full px-4 py-2 text-sm ${
+      filter === 'income'
+        ? 'bg-primary text-white'
+        : 'bg-gray-100'
+    }`}
+  >
+    Income
+  </button>
 
-<button className="rounded-full bg-gray-100 px-4 py-2 text-sm">
-Income
-</button>
+  <button
+    onClick={() => setFilter('expense')}
+    className={`rounded-full px-4 py-2 text-sm ${
+      filter === 'expense'
+        ? 'bg-primary text-white'
+        : 'bg-gray-100'
+    }`}
+  >
+    Expense
+  </button>
 
-<button className="rounded-full bg-gray-100 px-4 py-2 text-sm">
-Expense
-</button>
-
-<button className="rounded-full bg-gray-100 px-4 py-2 text-sm">
-Deposit
-</button>
-
+  <button
+    onClick={() => setFilter('deposit')}
+    className={`rounded-full px-4 py-2 text-sm ${
+      filter === 'deposit'
+        ? 'bg-primary text-white'
+        : 'bg-gray-100'
+    }`}
+  >
+    Deposit
+  </button>
 </div>
+/>
+
+          
           <div className="space-y-2">
             {filteredTransactions.length ? filteredTransactions.map((transaction) => (
               <div key={transaction.id} className="flex items-center justify-between gap-3 rounded-[20px] border border-gray-100 bg-white px-4 py-4 shadow-sm hover:shadow-md transition"
