@@ -15,8 +15,15 @@ export default function Dashboard() {
   totalTarget > 0
     ? Math.min(100, Math.round((totalSaved / totalTarget) * 100))
     : 0
-  const activeGoal = goals.find((goal) => !goal.isCompleted) || goals[0] || null
-
+  const activeGoalPercentage = activeGoal
+  ? Math.min(
+      100,
+      Math.round(
+        (activeGoal.currentAmount /
+          Math.max(activeGoal.targetAmount, 1)) * 100
+      )
+    )
+  : 0
   const quickActions = [
     { label: 'Deposit', icon: '💰', onClick: () => setScreen('newDeposit') },
     { label: 'Goals', icon: '🎯', onClick: () => setScreen('goals') },
