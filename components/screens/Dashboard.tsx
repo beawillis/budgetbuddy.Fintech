@@ -11,7 +11,10 @@ export default function Dashboard() {
 
   const totalSaved = goals.reduce((sum, goal) => sum + goal.currentAmount, 0)
   const totalTarget = goals.reduce((sum, goal) => sum + goal.targetAmount, 0)
-  const savingsPercentage = Math.round((totalSaved / totalTarget) * 100) || 0
+  const savingsPercentage =
+  totalTarget > 0
+    ? Math.min(100, Math.round((totalSaved / totalTarget) * 100))
+    : 0
   const activeGoal = goals.find((goal) => !goal.isCompleted) || goals[0] || null
 
   const quickActions = [
