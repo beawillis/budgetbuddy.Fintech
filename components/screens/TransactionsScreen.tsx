@@ -15,10 +15,16 @@ export default function TransactionsScreen() {
   const [amount, setAmount] = useState('')
   const [category, setCategory] = useState('General')
   const [type, setType] = useState<TransactionType>('expense')
+  const [search, setSearch] = useState('')
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState('')
+  const [search, setSearch] = useState('')
 
   const totals = useMemo(() => {
+    const filteredTransactions = transactions.filter((transaction) =>
+  transaction.title.toLowerCase().includes(search.toLowerCase()) ||
+  transaction.category.toLowerCase().includes(search.toLowerCase())
+)
     return transactions.reduce(
       (acc, transaction) => {
         if (transaction.type === 'expense') acc.expense += transaction.amount
@@ -29,6 +35,10 @@ export default function TransactionsScreen() {
       { income: 0, expense: 0, deposit: 0 },
     )
   }, [transactions])
+  const filteredTransactions = transactions.filter((transaction) =>
+  transaction.title.toLowerCase().includes(search.toLowerCase()) ||
+  transaction.category.toLowerCase().includes(search.toLowerCase())
+)
 
   const handleCreate = async () => {
     const numericAmount = Number(amount)
@@ -188,10 +198,12 @@ export default function TransactionsScreen() {
         <section className="rounded-[28px] border border-border bg-white p-4 shadow-sm">
           <div className="mb-3 flex items-center justify-between">
             <p className="text-sm font-semibold text-foreground">All transactions</p>
-            <p className="text-xs font-semibold text-muted-foreground">{transactions.length} total</p>
+            <p className="text-xs font-semibold text-muted-foreground">{filteredTransactions.length} total</p>
           </div>
           <input
   type="text"
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
   placeholder="🔍 Search transactions..."
   className="mb-4 w-full rounded-2xl border border-border bg-input px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary"
 />
@@ -215,7 +227,7 @@ Deposit
 
 </div>
           <div className="space-y-2">
-            {transactions.length ? transactions.map((transaction) => (
+            {filteredTransactions.length ? filteredTransactions.map((transaction) => (
               <div key={transaction.id} className="flex items-center justify-between gap-3 rounded-[20px] border border-gray-100 bg-white px-4 py-4 shadow-sm hover:shadow-md transition"
                 <div className="flex min-w-0 items-center gap-3">
                   <div className={`rounded-full p-2 ${
