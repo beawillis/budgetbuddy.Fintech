@@ -410,8 +410,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }
 
   const addTransaction = (transaction: Transaction) => {
-    setTransactions((currentTransactions) => [transaction, ...currentTransactions])
+  setTransactions((currentTransactions) => [
+    transaction,
+    ...currentTransactions,
+  ])
+
+  if (transaction.type === 'deposit' && currentGoal) {
+    setGoals((currentGoals) =>
+      currentGoals.map((goal) =>
+        goal.id === currentGoal.id
+          ? {
+              ...goal,
+              currentAmount: goal.currentAmount + transaction.amount,
+              isCompleted:
+                goal.currentAmount + transaction.amount >= goal.targetAmount,
+            }
+          : goal
+      )
+    )
   }
+}
 
   const removeTransaction = (id: string) => {
     setTransactions((currentTransactions) => currentTransactions.filter((transaction) => transaction.id !== id))
