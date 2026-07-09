@@ -416,6 +416,24 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   ])
 
   if (transaction.type === 'deposit' && currentGoal) {
+    setWalletBalance((balance) => balance + transaction.amount)
+
+    setGoals((currentGoals) =>
+      currentGoals.map((goal) =>
+        goal.id === currentGoal.id
+          ? {
+              ...goal,
+              currentAmount: goal.currentAmount + transaction.amount,
+              isCompleted:
+                goal.currentAmount + transaction.amount >= goal.targetAmount,
+            }
+          : goal
+      )
+    )
+  }
+}
+
+  if (transaction.type === 'deposit' && currentGoal) {
     setGoals((currentGoals) =>
       currentGoals.map((goal) =>
         goal.id === currentGoal.id
